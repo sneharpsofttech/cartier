@@ -1,0 +1,1641 @@
+.page {
+  min-height: 100dvh;
+}
+
+.arrowBtn span {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #fff;
+  /* The "→" glyph sits off-centre in most fonts, so it is hidden (size 0, so it takes no room
+     beside the icon) and drawn as an icon instead. */
+  font-size: 0;
+  color: #111;
+}
+
+.arrowBtn span::before,
+.heroBtn span::before {
+  content: "";
+  width: 11px;
+  height: 11px;
+  background: currentColor;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M1.5 6h8.5M7 3l3 3-3 3' fill='none' stroke='%23000' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+.brownBtn {
+  border-color: var(--brown);
+  background: var(--brown);
+}
+
+/* ---------- Hero ---------- */
+/*
+ * Proportions follow the reference at 1920px wide: beige column 30%, photo
+ * from 17.5% to 52%, message from 55%. The header shares the beige split.
+ */
+.hero {
+  position: relative;
+  display: grid;
+  grid-template-columns: 17.46% 34.55% minmax(0, 1fr);
+  padding: clamp(60px, 6.15vw, 118px) 0 clamp(30px, 2vw, 40px);
+  overflow: hidden;
+  /*
+   * Soft leaf shadows, as if a palm stood by the window: one across the top (40% wide,
+   * centred, behind the menu) and one in the lower-right corner, multiplied over the
+   * beige and white halves. The images carry their own faint strength (about 16-20%).
+   */
+  background:
+    url("/home/leaf-shadow-top.webp") 50% 0 / 40% auto no-repeat,
+    url("/home/leaf-shadow-corner.webp") 100% 100% no-repeat,
+    linear-gradient(90deg, var(--sand) 0 var(--hero-rail), #fff var(--hero-rail));
+  background-blend-mode: multiply, multiply, normal;
+}
+
+/*
+ * Desktop: the hero runs up behind the see-through home header (98px tall there), so the
+ * palm shadow and the beige column carry on behind the menu, as in the reference.
+ */
+@media (min-width: 901px) {
+  .hero {
+    margin-top: -98px;
+    padding-top: calc(clamp(60px, 6.15vw, 118px) + 98px);
+  }
+
+  /* Pieces placed from the hero's top edge move down by the same amount. */
+  .hero .railWord {
+    top: calc(clamp(36px, 3.4vw, 64px) + 98px);
+  }
+
+  .hero .thumbs {
+    top: calc(clamp(30px, 3vw, 58px) + 98px);
+  }
+}
+
+/* Tall outlined word running up the beige column. */
+.railWord {
+  position: absolute;
+  top: clamp(36px, 3.4vw, 64px);
+  left: 2.1%;
+  font-family: var(--font-serif);
+  font-size: clamp(60px, 5.7vw, 110px);
+  line-height: 1;
+  text-transform: uppercase;
+  color: transparent;
+  -webkit-text-stroke: 1.2px rgba(17, 17, 17, 0.16);
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  pointer-events: none;
+}
+
+.thumbs {
+  position: absolute;
+  top: clamp(30px, 3vw, 58px);
+  left: 8.5%;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(40px, 4.7vw, 90px);
+}
+
+.thumb {
+  width: clamp(76px, 6vw, 115px);
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumb:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(60, 40, 20, 0.12);
+}
+
+/* The current slide's thumbnail: a thin brown frame drawn a little outside it. */
+.thumb {
+  outline: 1px solid transparent;
+  outline-offset: 10px;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    outline-color 0.4s ease,
+    outline-offset 0.4s ease;
+}
+
+.thumb[data-active="true"] {
+  outline-color: var(--brown);
+  outline-offset: 5px;
+}
+
+.thumb:focus-visible {
+  outline: 2px solid var(--brown);
+  outline-offset: 3px;
+}
+
+/* The main photo, with a wide arch at its top-left corner. */
+.heroMain {
+  position: relative;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  aspect-ratio: 1.186;
+  overflow: hidden;
+  border-top-left-radius: 40% 49%;
+  background: var(--card-2);
+}
+
+/* A new slide's photo wipes in from the left (the first one is revealed by the page loader). */
+.heroMain[data-anim] {
+  animation: wipe 1.1s cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+.heroMain img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center 22%;
+  /* A slow, gentle zoom while the slide is up. */
+  animation: settle 8s ease-out both;
+}
+
+.heroCopy {
+  position: relative;
+  grid-column: 3;
+  grid-row: 1;
+  padding: clamp(14px, 1.7vw, 32px) 24px 0 clamp(28px, 3.13vw, 60px);
+  /* Blend as a group: the renders' white backdrops melt into the palm shadow. */
+  mix-blend-mode: multiply;
+}
+
+/* On a slide change the lines rise in one after another. */
+.heroCopy[data-anim] > * {
+  animation: lineIn 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.heroCopy[data-anim] > :nth-child(2) {
+  animation-delay: 0.1s;
+}
+
+.heroCopy[data-anim] > :nth-child(3) {
+  animation-delay: 0.2s;
+}
+
+.heroCopy[data-anim] > :nth-child(4) {
+  animation-delay: 0.3s;
+}
+
+.heroKicker {
+  font-size: 15px;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  color: #b08a5e;
+}
+
+.heroCopy h1 {
+  max-width: 600px;
+  margin-top: 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(34px, 2.75vw, 54px);
+  font-weight: 400;
+  line-height: 1.17;
+}
+
+.heroCopy > p:not(.heroKicker) {
+  max-width: 570px;
+  margin: 26px 0 40px;
+  font-size: 16px;
+  line-height: 1.9;
+  color: var(--ink-soft);
+}
+
+.heroRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+  max-width: 690px;
+}
+
+.heroLeft {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.heroBtn {
+  padding: 18px 34px;
+  font-size: 18px;
+}
+
+.heroBtn span {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #fff;
+  font-size: 0;
+  color: #111;
+  transition: transform 0.3s ease;
+}
+
+.heroBtn:hover span {
+  transform: translateX(4px);
+}
+
+.heroBtn span::before {
+  width: 13px;
+  height: 13px;
+}
+
+/* The rings sit well under the button, as in the reference. */
+.heroRings {
+  width: clamp(160px, 14.6vw, 280px);
+  margin-top: clamp(50px, 8vw, 150px);
+  animation: float 5s ease-in-out infinite;
+}
+
+.heroSide {
+  flex: none;
+  width: clamp(120px, 10.9vw, 210px);
+  aspect-ratio: 0.79;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  background: var(--card-2);
+  animation: float 6s -2.5s ease-in-out infinite;
+}
+
+.heroSide img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.heroSide:hover img {
+  transform: scale(1.07);
+}
+
+/* 1 ——→ 2 3 under the main photo. */
+.dots {
+  position: relative;
+  /* Sits in the photo's own row, just under it (84.3% = the photo's height as a share of its width). */
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  justify-self: start;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: calc(84.3% + clamp(40px, 5vw, 95px)) 0 0 55%;
+}
+
+.dots button {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: #e6e3df;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.dots button[data-active="true"] {
+  margin-right: 84px;
+  background: var(--brown);
+  color: #fff;
+}
+
+/* An arrow runs on from the current slide's number. */
+.dots button[data-active="true"]::after {
+  content: "";
+  position: absolute;
+  left: 44px;
+  width: 66px;
+  height: 2px;
+  background: linear-gradient(var(--brown), var(--brown)) 0 0 / 0% 100% no-repeat, var(--line-strong);
+}
+
+/* While the slides play on their own, the line fills in as a countdown to the next one. */
+.dots[data-auto] button[data-active="true"]::after {
+  animation: countdown var(--slide-ms, 6500ms) linear both;
+}
+
+.dots button[data-active="true"]::before {
+  content: "";
+  position: absolute;
+  left: 104px;
+  width: 7px;
+  height: 7px;
+  border-top: 1px solid var(--line-strong);
+  border-right: 1px solid var(--line-strong);
+  transform: rotate(45deg);
+}
+
+/* Round badge on the photo's lower-right corner (84.3% = the photo's height as a share of its width). */
+.badge {
+  --b: clamp(110px, 7.9vw, 152px);
+  position: relative;
+  z-index: 3;
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  justify-self: end;
+  display: grid;
+  place-items: center;
+  width: var(--b);
+  height: var(--b);
+  margin: calc(84.3% - var(--b) / 2) calc(var(--b) / -2) 0 0;
+  border-radius: 50%;
+  background: var(--paper);
+  box-shadow: 0 14px 30px rgba(60, 36, 20, 0.14);
+  text-decoration: none;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.badge:hover {
+  transform: scale(1.06);
+  box-shadow: 0 18px 36px rgba(60, 36, 20, 0.2);
+}
+
+.badgeText {
+  position: absolute;
+  inset: 4%;
+  width: 92%;
+  height: 92%;
+  font-family: var(--font-serif);
+  font-size: 9.6px;
+  text-transform: uppercase;
+  fill: var(--ink);
+  animation: turn 18s linear infinite;
+}
+
+.badgeStar {
+  width: 28%;
+  height: 28%;
+  fill: var(--brown);
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+/* Twinkling stars scattered over the hero. */
+.sparkles {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.sparkle {
+  position: absolute;
+  fill: #c99a62;
+  animation: twinkle 3.2s ease-in-out infinite both;
+}
+
+@keyframes turn {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.7;
+    transform: scale(0.78) rotate(45deg);
+  }
+}
+
+@keyframes twinkle {
+  0%,
+  100% {
+    opacity: 0.15;
+    transform: scale(0.45) rotate(0deg);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1) rotate(90deg);
+  }
+}
+
+@keyframes wipe {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes settle {
+  from {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes lineIn {
+  from {
+    opacity: 0;
+    filter: blur(6px);
+    transform: translateY(18px);
+  }
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-10px) rotate(-2deg);
+  }
+}
+
+@keyframes countdown {
+  to {
+    background-size: 100% 100%, auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroMain img,
+  .heroRings,
+  .heroSide,
+  .dots[data-auto] button[data-active="true"]::after,
+  .badgeText,
+  .badgeStar {
+    animation: none;
+  }
+
+  .sparkle {
+    animation: none;
+    opacity: 0.6;
+  }
+
+  .heroMain[data-anim],
+  .heroCopy[data-anim] > * {
+    animation-duration: 0.3s;
+  }
+}
+
+/* ---------- Statement ---------- */
+.statement {
+  position: relative;
+  padding: 90px 40px 90px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.leafLeft,
+.leafRight {
+  position: absolute;
+  width: 260px;
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1;
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.leafLeft {
+  top: 30px;
+  left: -40px;
+  transform: rotate(-20deg);
+}
+
+.leafRight {
+  right: -30px;
+  bottom: -40px;
+  transform: rotate(200deg);
+}
+
+.statementText {
+  position: relative;
+  max-width: 1120px;
+  margin: 26px auto 0;
+  font-family: var(--font-serif);
+  font-size: clamp(24px, 2.6vw, 38px);
+  line-height: 1.6;
+  text-transform: uppercase;
+}
+
+.inlineGem {
+  display: inline-block;
+  width: 1.4em;
+  height: 1.4em;
+  margin: 0 0.35em 0 0.1em;
+  object-fit: contain;
+  vertical-align: middle;
+  mix-blend-mode: multiply;
+}
+
+.features {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 34px 64px;
+  margin-top: 54px;
+  list-style: none;
+}
+
+.features li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+}
+
+.features svg {
+  width: 38px;
+  height: 38px;
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 1.1;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+
+
+
+
+/* ---------- Category panels ---------- */
+/* One photo fills the band behind four equal columns; it crossfades to the active category. */
+.panels {
+  position: relative;
+  height: clamp(420px, 41.7vw, 800px);
+  overflow: hidden;
+  background: #2a1d15;
+}
+
+.panelBg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transform: scale(1.04);
+  transition: opacity 0.7s ease, transform 1.2s ease;
+}
+
+.panelBg[data-active="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* A warm shade over the photo so the white type always reads. */
+.panels::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(45, 28, 18, 0.22), rgba(45, 28, 18, 0.5));
+  pointer-events: none;
+}
+
+.panelCols {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  height: 100%;
+}
+
+.panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  border-right: 1px solid rgba(255, 255, 255, 0.28);
+  color: #fff;
+  text-decoration: none;
+  transition: background 0.5s ease;
+}
+
+.panel:last-child {
+  border-right: 0;
+}
+
+.panel[data-active="true"] {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.panel:focus-visible {
+  outline: 1px solid rgba(255, 255, 255, 0.8);
+  outline-offset: -8px;
+}
+
+.panelInfo {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  width: min(86%, 340px);
+  text-align: center;
+  opacity: 0;
+  transform: translate(-50%, -30%);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+  pointer-events: none;
+}
+
+.panel[data-active="true"] .panelInfo {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.panelOval {
+  padding: 14px 32px;
+  border: 1px solid rgba(255, 255, 255, 0.85);
+  border-radius: 50%;
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 2.3vw, 44px);
+  white-space: nowrap;
+}
+
+.panelText {
+  font-size: 13px;
+  line-height: 1.75;
+  text-transform: capitalize;
+}
+
+.panelCount {
+  font-size: 13px;
+}
+
+.panelLabel {
+  margin-bottom: clamp(30px, 3.2vw, 60px);
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 2.3vw, 44px);
+  transition: opacity 0.3s ease;
+}
+
+.panel[data-active="true"] .panelLabel {
+  opacity: 0;
+}
+
+/* ---------- Sections ---------- */
+/* Content runs 1620px wide on large screens, with 150px between sections. */
+.section {
+  max-width: 1760px;
+  margin: 150px auto 0;
+  padding: 0 70px;
+}
+
+/* The small capitals above the home page's headings run larger and darker than the shop's. */
+.page :global(.kicker) {
+  font-size: clamp(12px, 0.84vw, 16px);
+  letter-spacing: 0.31em;
+  color: var(--ink);
+}
+
+.head {
+  margin-bottom: clamp(36px, 3.7vw, 70px);
+}
+
+.head h2,
+.deal h2,
+.necklaceText h2,
+.braceletText h2,
+.bannerText h2,
+.newsletter h2 {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 2.6vw, 50px);
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.center {
+  text-align: center;
+}
+
+/* ---------- Carousels ---------- */
+.carousel,
+.centerRow {
+  display: grid;
+  grid-auto-flow: column;
+  gap: 30px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  outline: none;
+}
+
+.carousel {
+  grid-auto-columns: calc((100% - 3 * 30px) / 4);
+}
+
+/* Full-bleed row that rests on a centred card, with neighbours peeking in at both edges. */
+.centerRow {
+  grid-auto-columns: clamp(240px, 22.4vw, 423px);
+}
+
+.carousel::-webkit-scrollbar,
+.centerRow::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel > * {
+  scroll-snap-align: start;
+}
+
+.centerRow > * {
+  scroll-snap-align: center;
+}
+
+/* Mouse users can drag the rows; snapping waits until they have glided to rest. */
+@media (hover: hover) {
+  .carousel,
+  .centerRow {
+    cursor: grab;
+  }
+}
+
+.carousel[data-free],
+.centerRow[data-free] {
+  scroll-snap-type: none;
+}
+
+.carousel[data-dragging],
+.centerRow[data-dragging] {
+  cursor: grabbing;
+  user-select: none;
+}
+
+.carousel[data-dragging] a,
+.carousel[data-dragging] button,
+.centerRow[data-dragging] a,
+.centerRow[data-dragging] button {
+  pointer-events: none;
+}
+
+/* Card names run larger on the home page, kept to two lines. */
+.carousel > * > a,
+.centerRow > * > a {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: clamp(18px, 1.3vw, 25px);
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.centerRow > * {
+  align-items: center;
+  text-align: center;
+}
+
+.centerRow > * > span:last-child {
+  justify-content: center;
+}
+
+/* A thin brown line with a short black dash that travels along it. */
+.progress {
+  --thumb: min(200px, 40%);
+  position: relative;
+  height: 3px;
+  margin-top: clamp(50px, 4.7vw, 90px);
+  background: var(--brown);
+  cursor: pointer;
+  touch-action: none;
+}
+
+/* A taller invisible strip makes the thin line easy to grab. */
+.progress::before {
+  content: "";
+  position: absolute;
+  inset: -10px 0;
+}
+
+.progress span {
+  position: absolute;
+  top: -1.5px;
+  width: var(--thumb);
+  height: 6px;
+  background: #111;
+}
+
+/* ---------- Deal banner ---------- */
+.deal {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 30px;
+  padding: 50px 60px;
+  color: #fff;
+  /* Warm brown marble: faint light veins over a soft sheen. */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1600 200' preserveAspectRatio='none'%3E%3Cfilter id='b'%3E%3CfeGaussianBlur stdDeviation='1.6'/%3E%3C/filter%3E%3Cg fill='none' stroke='%23fff' stroke-width='2' filter='url(%23b)'%3E%3Cpath stroke-opacity='.13' d='M0 160C260 70 470 190 820 30'/%3E%3Cpath stroke-opacity='.09' d='M180 0C250 80 410 100 520 200'/%3E%3Cpath stroke-opacity='.1' d='M610 200C760 120 900 170 1110 0'/%3E%3Cpath stroke-opacity='.12' d='M1020 200C1210 90 1360 160 1600 50'/%3E%3C/g%3E%3C/svg%3E") center / 100% 100% no-repeat,
+    radial-gradient(60% 120% at 20% 30%, rgba(255, 255, 255, 0.12), transparent 60%),
+    radial-gradient(40% 90% at 85% 80%, rgba(0, 0, 0, 0.18), transparent 70%),
+    linear-gradient(115deg, #7a573f, #95705a 45%, #7b583f 75%, #8b6650);
+}
+
+.dealKicker {
+  font-size: clamp(12px, 0.84vw, 16px);
+  letter-spacing: 0.31em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.deal h2 {
+  margin-top: 8px;
+  color: #fff;
+}
+
+/* The display bust stands taller than the band, rising above and below it. */
+.dealPiece {
+  --w: clamp(150px, 11.8vw, 225px);
+  display: block;
+  width: var(--w);
+  aspect-ratio: 444 / 600;
+  /* Rises about 55px past the band at full size (the band has 50px of padding). */
+  margin: calc(var(--w) * -0.46) 0;
+  filter: drop-shadow(0 10px 12px rgba(60, 36, 20, 0.22));
+}
+
+.countdown {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.countdown span {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+  padding: 0 clamp(16px, 2.3vw, 44px);
+}
+
+.countdown span:first-child {
+  padding-left: 0;
+}
+
+.countdown span:last-child {
+  padding-right: 0;
+}
+
+/* Short dividers between the units, level with the numbers. */
+.countdown span + span::before {
+  content: "";
+  position: absolute;
+  top: 20%;
+  left: 0;
+  width: 1px;
+  height: 56%;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.countdown strong {
+  font-family: var(--font-serif);
+  min-width: 80px;
+  font-size: clamp(32px, 2.6vw, 50px);
+  font-weight: 400;
+  line-height: 1.32;
+  text-align: center;
+}
+
+.countdown small {
+  margin-top: 10px;
+  font-size: clamp(11px, 0.74vw, 14px);
+  letter-spacing: 0.36em;
+  text-transform: uppercase;
+}
+
+/* ---------- Necklace feature ---------- */
+.necklace {
+  display: grid;
+  grid-template-columns: minmax(0, 810fr) minmax(0, 730fr);
+  align-items: center;
+  gap: clamp(40px, 4.2vw, 80px);
+  margin-top: 150px;
+  padding: 150px max(70px, calc((100% - 1620px) / 2));
+  background: var(--sand);
+}
+
+/* An arched portrait at the back, a framed close-up overlapping it, and a small framed pendant photo. */
+.necklaceMedia {
+  position: relative;
+  display: block;
+  aspect-ratio: 810 / 599;
+}
+
+.necklaceMedia img {
+  position: absolute;
+  object-fit: cover;
+  transition: transform 0.7s ease;
+}
+
+.stackMain {
+  top: 0;
+  left: 3%;
+  width: 46%;
+  height: 100%;
+  border-radius: 999px 999px 0 0;
+  /* Square photo: keep her face and the choker in the middle of the arch. */
+  object-position: 44% center;
+}
+
+.stackFrame {
+  position: absolute;
+  top: 12%;
+  left: 52%;
+  width: 44%;
+  height: 76%;
+  border: 1px solid var(--brown);
+}
+
+.stackSide {
+  bottom: 0;
+  left: 38%;
+  width: 40%;
+  aspect-ratio: 1;
+  padding: 8px;
+  background: var(--paper);
+  box-shadow: 0 22px 44px rgba(60, 36, 20, 0.2);
+}
+
+.stackPiece {
+  top: 4%;
+  right: 2%;
+  width: 26%;
+  aspect-ratio: 0.8;
+  padding: 8px;
+  background: var(--paper);
+  box-shadow: 0 14px 30px rgba(60, 36, 20, 0.16);
+  object-position: center 58%;
+}
+
+.necklaceMedia:hover .stackMain {
+  transform: translateY(-6px);
+}
+
+.necklaceMedia:hover .stackSide {
+  transform: translate(8px, -10px);
+}
+
+.necklaceMedia:hover .stackPiece {
+  transform: translate(-6px, 8px);
+}
+
+.necklaceText h2 {
+  font-size: clamp(26px, 2.1vw, 40px);
+}
+
+.necklaceText > p:not(:global(.kicker)) {
+  max-width: 560px;
+  margin: 18px 0 28px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+/* ---------- Bracelets ---------- */
+/*
+ * Columns follow the reference layout at 1620px: an arch on the left, the text in the
+ * middle and a ring box on the right; below, two cards and a tall arch that rises
+ * into the row above. Offsets are in container widths (cqw) so the layout scales.
+ */
+.bracelets {
+  position: relative;
+  container-type: inline-size;
+  display: grid;
+  grid-template-columns:
+    minmax(0, 80fr) minmax(0, 498fr) minmax(0, 160fr) minmax(0, 154fr) minmax(0, 160fr)
+    minmax(0, 163fr) minmax(0, 41fr) minmax(0, 324fr) minmax(0, 40fr);
+  grid-template-areas:
+    "arch arch . text text text . box ."
+    ". pair pair pair . tall tall tall tall";
+  max-width: 1760px;
+  margin: 50px auto 0;
+  padding: 0 70px;
+  overflow: hidden;
+}
+
+.archCard {
+  position: relative;
+  grid-area: arch;
+  display: grid;
+  place-items: center;
+  align-self: start;
+  aspect-ratio: 578 / 751;
+  margin-top: 6.17cqw;
+  overflow: hidden;
+  border-radius: 999px 999px 0 0;
+  background: var(--card-2);
+  text-decoration: none;
+}
+
+.archCard img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.archCard:hover img {
+  transform: scale(1.05);
+}
+
+/* Keep the ring on the hand in view in the narrow arch. */
+.archCard img {
+  object-position: 62% center;
+}
+
+.archTall img {
+  object-position: 35% 20%;
+}
+
+.archTall .shopCircle {
+  top: 80%;
+}
+
+/* Thin frame inside the arch. */
+.archCard::after {
+  content: "";
+  position: absolute;
+  inset: 22% 6% 4%;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-top: 0;
+  pointer-events: none;
+}
+
+.arcText {
+  position: absolute;
+  z-index: 1;
+  top: 3%;
+  left: 5%;
+  width: 90%;
+  font-family: var(--font-serif);
+  font-size: 19px;
+  fill: #111;
+}
+
+/* Sits low in the arch so it never covers the jewellery in the photo. */
+.shopCircle {
+  position: absolute;
+  top: 72%;
+  left: 50%;
+  display: grid;
+  place-items: center;
+  width: clamp(86px, 9.2cqw, 149px);
+  height: clamp(86px, 9.2cqw, 149px);
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.82);
+  font-family: var(--font-serif);
+  font-size: clamp(14px, 1.1cqw, 18px);
+  line-height: 1.15;
+  text-align: center;
+  text-transform: uppercase;
+  color: #111;
+  transform: translate(-50%, -50%);
+}
+
+.braceletText {
+  grid-area: text;
+  align-self: center;
+  margin-top: 6.17cqw;
+}
+
+.braceletText > p:not(:global(.kicker)) {
+  margin: 18px 0 28px;
+  font-size: 15px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+.ringBox {
+  grid-area: box;
+  align-self: start;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  background: #fff;
+}
+
+.ringBox img {
+  width: 86%;
+}
+
+.pair {
+  grid-area: pair;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.85cqw;
+  margin-top: 6.17cqw;
+}
+
+/* Photo tiles under the text: picture, collection name and title, centred. */
+.pairTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
+  text-align: center;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.pairPhoto {
+  width: 100%;
+  aspect-ratio: 0.8;
+  margin-bottom: 12px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.pairPhoto img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.pairTile:hover .pairPhoto img {
+  transform: scale(1.05);
+}
+
+.pairNote {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--gold-ink);
+}
+
+.pairTitle {
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 1.3vw, 25px);
+  line-height: 1.3;
+  transition: color 0.2s ease;
+}
+
+.pairTile:hover .pairTitle {
+  color: var(--gold-ink);
+}
+
+.archTall {
+  grid-area: tall;
+  align-self: start;
+  aspect-ratio: 568 / 790;
+  margin-top: -6.17cqw;
+}
+
+/* ---------- Collection ---------- */
+.collection {
+  margin-top: 150px;
+  padding: 150px 0 115px;
+  background: var(--sand);
+}
+
+.collection .head {
+  padding: 0 16px;
+}
+
+/* ---------- Two banners ---------- */
+.banners {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 20px;
+  max-width: 1760px;
+  margin: 150px auto 0;
+  padding: 0 70px;
+}
+
+.bannerCard {
+  position: relative;
+  display: flex;
+  align-items: center;
+  aspect-ratio: 800 / 467;
+  overflow: hidden;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.bannerCard img {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.8s ease;
+}
+
+.bannerCard:hover img {
+  transform: scale(1.04);
+}
+
+.bannerLight {
+  background: #efe0cd;
+}
+
+/* The photo fades in from the card's colour so the heading sits on a clean ground. */
+.bannerLight img {
+  object-position: center 55%;
+  mask-image: linear-gradient(to right, transparent, #000 30%);
+}
+
+/* The diamond set: a blush ground to match the satin, showing the ring and earrings. */
+.bannerSet {
+  background: #f2e0d3;
+}
+
+.bannerSet img {
+  width: 56%;
+  object-position: right center;
+}
+
+.bannerText {
+  position: relative;
+  z-index: 1;
+  max-width: 54%;
+  padding-left: clamp(24px, 2.5vw, 40px);
+}
+
+.bannerText h2 {
+  font-size: clamp(24px, 2.6vw, 50px);
+}
+
+.bannerKicker {
+  font-size: clamp(11px, 0.75vw, 14px);
+  letter-spacing: 0.31em;
+  text-transform: uppercase;
+}
+
+.bannerBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(18px, 1.6vw, 30px);
+  padding: 13px 22px;
+  background: #111;
+  font-size: 14px;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.bannerLight:hover .bannerBtn {
+  background: var(--brown);
+}
+
+/* ---------- Newsletter ---------- */
+.newsletter {
+  margin-top: 150px;
+  padding: 100px max(70px, calc((100% - 1620px) / 2));
+  /* Warm peach with a scatter of soft white stars. */
+  background:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='640' height='380'%3E%3Cdefs%3E%3Cpath id='a' d='M12 2l2.9 6.9 7.1.6-5.4 4.7 1.7 7-6.3-3.8-6.3 3.8 1.7-7L2 9.5l7.1-.6z'/%3E%3Cpath id='b' d='M12 2c.6 4.8 2.4 8.4 10 10-7.6 1.6-9.4 5.2-10 10-.6-4.8-2.4-8.4-10-10 7.6-1.6 9.4-5.2 10-10z'/%3E%3C/defs%3E%3Cg fill='%23fff'%3E%3Cuse href='%23b' transform='translate%28201 54%29 rotate%285%29 scale%281.13%29' opacity='0.62'/%3E%3Cuse href='%23a' transform='translate%28227 21%29 rotate%283%29 scale%280.98%29' opacity='0.57'/%3E%3Cuse href='%23a' transform='translate%2843 33%29 rotate%2858%29 scale%280.90%29' opacity='0.41'/%3E%3Cuse href='%23b' transform='translate%28138 226%29 rotate%2840%29 scale%281.45%29' opacity='0.55'/%3E%3Cuse href='%23a' transform='translate%28605 17%29 rotate%2820%29 scale%281.35%29' opacity='0.42'/%3E%3Cuse href='%23a' transform='translate%2873 111%29 rotate%2813%29 scale%281.31%29' opacity='0.64'/%3E%3Cuse href='%23b' transform='translate%28396 134%29 rotate%284%29 scale%281.03%29' opacity='0.38'/%3E%3Cuse href='%23a' transform='translate%28128 245%29 rotate%2822%29 scale%280.90%29' opacity='0.64'/%3E%3Cuse href='%23a' transform='translate%28281 108%29 rotate%2849%29 scale%281.28%29' opacity='0.47'/%3E%3Cuse href='%23b' transform='translate%28356 189%29 rotate%2851%29 scale%281.37%29' opacity='0.49'/%3E%3Cuse href='%23a' transform='translate%28608 43%29 rotate%2853%29 scale%280.89%29' opacity='0.43'/%3E%3Cuse href='%23a' transform='translate%28303 14%29 rotate%2854%29 scale%281.15%29' opacity='0.64'/%3E%3Cuse href='%23b' transform='translate%28543 113%29 rotate%2842%29 scale%281.18%29' opacity='0.64'/%3E%3Cuse href='%23a' transform='translate%28283 302%29 rotate%2833%29 scale%281.44%29' opacity='0.68'/%3E%3Cuse href='%23a' transform='translate%2838 253%29 rotate%2870%29 scale%281.13%29' opacity='0.76'/%3E%3Cuse href='%23b' transform='translate%28176 139%29 rotate%282%29 scale%281.15%29' opacity='0.58'/%3E%3Cuse href='%23a' transform='translate%28104 42%29 rotate%2854%29 scale%280.51%29' opacity='0.41'/%3E%3Cuse href='%23a' transform='translate%28154 141%29 rotate%286%29 scale%281.36%29' opacity='0.57'/%3E%3Cuse href='%23b' transform='translate%28341 318%29 rotate%2860%29 scale%281.31%29' opacity='0.49'/%3E%3Cuse href='%23a' transform='translate%28257 129%29 rotate%2867%29 scale%281.38%29' opacity='0.43'/%3E%3Cuse href='%23a' transform='translate%28109 84%29 rotate%2834%29 scale%280.70%29' opacity='0.64'/%3E%3Cuse href='%23b' transform='translate%28163 1%29 rotate%2826%29 scale%280.89%29' opacity='0.63'/%3E%3C/g%3E%3C/svg%3E") 0 0 / 640px 380px,
+    radial-gradient(60% 120% at 50% 40%, rgba(255, 250, 244, 0.7), transparent 70%),
+    linear-gradient(90deg, #f1dcc8, #f6e6d7 50%, #efd8c3);
+}
+
+.newsInner {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr) auto;
+  align-items: center;
+  gap: clamp(30px, 3vw, 60px);
+}
+
+.newsInner > div > p {
+  max-width: 570px;
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: var(--ink-soft);
+}
+
+.newsRow {
+  display: flex;
+}
+
+.newsRow input {
+  flex: 1;
+  min-width: 0;
+  height: 58px;
+  padding: 0 30px;
+  border: 1px solid #e1e1e1;
+  border-right: 0;
+  background: var(--sand);
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+.newsRow button {
+  height: 58px;
+  padding: 0 26px;
+  border: 0;
+  background: #111;
+  font: inherit;
+  font-size: 16px;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.newsRow button:hover {
+  background: var(--brown);
+}
+
+.newsAgree {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.newsAgree input {
+  accent-color: #111;
+}
+
+.newsThanks {
+  font-family: var(--font-serif);
+  font-size: 20px;
+}
+
+.connect {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 16px;
+  align-self: stretch;
+  padding-left: clamp(30px, 3vw, 60px);
+  border-left: 1px solid var(--line-strong);
+}
+
+.connect h3 {
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 1.3vw, 25px);
+  font-weight: 400;
+}
+
+.connect ul {
+  display: flex;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.connect a {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #111;
+  transition: background 0.2s ease;
+}
+
+.connect a:hover {
+  background: var(--brown);
+}
+
+.connect svg {
+  width: 18px;
+  height: 18px;
+  fill: #fff;
+}
+
+@media (max-width: 1100px) {
+  .heroSide,
+  .heroRings {
+    display: none;
+  }
+
+  .section,
+  .bracelets,
+  .banners {
+    padding: 0 32px;
+  }
+
+  .necklace,
+  .newsletter {
+    padding-left: 32px;
+    padding-right: 32px;
+  }
+
+  .carousel {
+    grid-auto-columns: calc((100% - 30px) / 2);
+  }
+
+  .newsInner {
+    grid-template-columns: 1fr;
+  }
+
+  .connect {
+    padding: 26px 0 0;
+    border-left: 0;
+    border-top: 1px solid var(--line-strong);
+  }
+
+  .deal {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .dealPiece {
+    display: none;
+  }
+
+  .countdown {
+    justify-content: center;
+  }
+
+  .bracelets {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas:
+      "arch text"
+      "pair tall";
+    gap: 40px 30px;
+    margin-top: 110px;
+  }
+
+  .archCard,
+  .archTall,
+  .braceletText,
+  .pair {
+    margin-top: 0;
+  }
+
+  .pair {
+    gap: 22px;
+  }
+
+  .ringBox {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    padding: 0 0 40px;
+    background: #fff;
+  }
+
+  .railWord,
+  .thumbs,
+  .badge {
+    display: none;
+  }
+
+  .heroMain {
+    grid-column: 1;
+    grid-row: 1;
+    border-top-left-radius: 46% 40%;
+  }
+
+  .heroCopy {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 28px 16px 0;
+  }
+
+  .dots {
+    grid-column: 1;
+    grid-row: 3;
+    justify-self: start;
+    margin: 30px 16px 0;
+  }
+
+  .railWord {
+    display: none;
+  }
+
+  .statement {
+    padding: 64px 16px 80px;
+  }
+
+  .features {
+    gap: 26px 34px;
+  }
+
+
+  /* Phones: the columns stack; the band's photo still crossfades behind them. */
+  .panels {
+    height: auto;
+  }
+
+  .panelCols {
+    grid-template-columns: 1fr;
+  }
+
+  .panel {
+    min-height: 120px;
+    border-right: 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.28);
+  }
+
+  .panel[data-active="true"] {
+    min-height: 340px;
+  }
+
+  .panelLabel {
+    margin-bottom: 36px;
+  }
+
+  .section,
+  .bracelets,
+  .banners {
+    margin-top: 70px;
+    padding: 0 16px;
+  }
+
+  .banners {
+    grid-template-columns: 1fr;
+  }
+
+  .bannerCard {
+    aspect-ratio: auto;
+    min-height: 260px;
+  }
+
+  .bannerText {
+    padding: 32px 0 32px 20px;
+  }
+
+  .centerRow {
+    grid-auto-columns: 70%;
+    gap: 16px;
+  }
+
+  .newsletter {
+    margin-top: 70px;
+    padding: 60px 16px;
+  }
+
+  .carousel {
+    grid-auto-columns: 72%;
+  }
+
+  .deal {
+    padding: 34px 20px;
+  }
+
+  .countdown span {
+    min-width: 0;
+    padding: 0 10px;
+  }
+
+  .countdown strong {
+    min-width: 0;
+    font-size: 30px;
+  }
+
+  .necklace {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .necklace {
+    margin-top: 70px;
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+
+  .bracelets {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "arch"
+      "text"
+      "pair";
+  }
+
+  .archTall {
+    display: none;
+  }
+
+  .collection {
+    margin-top: 70px;
+    padding: 50px 0 60px;
+  }
+}

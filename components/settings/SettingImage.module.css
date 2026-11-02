@@ -1,0 +1,23 @@
+.frame {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: var(--photo);
+}
+
+.frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* White studio renders vanish into the ivory tile. */
+  mix-blend-mode: multiply;
+  transition: transform 0.5s ease;
+}
+
+.placeholder {
+  fill: none;
+  stroke: var(--line-strong);
+  stroke-width: 1.2;
+}

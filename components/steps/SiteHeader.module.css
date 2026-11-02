@@ -1,0 +1,726 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+}
+
+/* Home: see-through at the top, so the hero (and its beige column and palm shadow) shows behind the logo and menu. */
+.header[data-home] {
+  border-bottom: 0;
+  background: transparent;
+}
+
+/* Once scrolled, the pinned header goes back to a plain bar over the page. */
+.header[data-home] .bar[data-scrolled="true"] {
+  background: var(--paper);
+  box-shadow: 0 1px 0 var(--line);
+}
+
+/* ---------- Announcement strip (black) ---------- */
+.promo {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 16px;
+  min-height: 48px;
+  padding: 0 40px;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.promo p {
+  color: var(--ink-soft);
+  text-align: center;
+}
+
+.promo span[aria-hidden] {
+  margin: 0 8px;
+  color: var(--gold-ink);
+}
+
+.promo a {
+  color: var(--gold-ink);
+  text-decoration: none;
+}
+
+.promo a:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.promoRight {
+  text-align: right;
+}
+
+/* ---------- Logo bar ---------- */
+/* One row: logo, navigation, icons. The mega menus hang from this row. */
+.bar {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  /* Content sits in a centred container about 1630px wide, as on the reference. */
+  padding: 0 max(40px, calc((100% - 1634px) / 2));
+}
+
+/* Once the page scrolls, the row tightens up. */
+.bar[data-scrolled="true"] .top {
+  padding-top: 18px;
+  padding-bottom: 18px;
+}
+
+.bar[data-scrolled="true"] .wordmark {
+  font-size: 26px;
+}
+
+/* The tagline folds away while the header is pinned and tightened. */
+.bar[data-scrolled="true"] .tagline {
+  max-height: 0;
+  margin-top: 0;
+  opacity: 0;
+}
+
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.right {
+  justify-content: flex-end;
+}
+
+.icon {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.icon svg {
+  width: 24px;
+  height: 24px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+}
+
+.icon:hover {
+  color: var(--gold-ink);
+}
+
+.menuButton {
+  display: none;
+}
+
+.count {
+  position: absolute;
+  top: 2px;
+  right: 0;
+  display: grid;
+  place-items: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 50%;
+  background: var(--gold);
+  font-size: 10px;
+  font-weight: 600;
+  color: var(--on-gold);
+}
+
+/* The DAZORA wordmark with "Crafted for forever" set small beneath it. */
+.brand {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-decoration: none;
+}
+
+/* Each line gives back its trailing letter space so the two stay centred on each other. */
+.wordmark {
+  margin-right: -0.24em;
+  font-family: var(--font-serif);
+  font-size: 34px;
+  letter-spacing: 0.24em;
+  line-height: 1;
+  text-transform: uppercase;
+  color: #3b271a;
+  transition: font-size 0.25s ease;
+}
+
+.tagline {
+  max-height: 20px;
+  margin: 9px -0.32em 0 0;
+  overflow: hidden;
+  font-size: 10px;
+  letter-spacing: 0.32em;
+  line-height: 1.2;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #5c4535;
+  transition: max-height 0.25s ease, margin 0.25s ease, opacity 0.25s ease;
+}
+
+
+/* ---------- Main navigation ---------- */
+/* The mega menu panel is positioned against the whole header row (.bar). */
+.nav {
+  position: static;
+}
+
+.nav ul {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  list-style: none;
+}
+
+.top {
+  display: block;
+  white-space: nowrap;
+  padding: 38px 18px;
+  font-size: 17px;
+  text-transform: capitalize;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 0.2s ease, padding 0.25s ease;
+}
+
+/* Small brown tag beside a menu label, such as "3D" on Custom Ring. */
+.badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 5px 1px;
+  background: var(--brown);
+  font-size: 9px;
+  line-height: 1.3;
+  letter-spacing: 0.08em;
+  color: #fff;
+  vertical-align: 6px;
+}
+
+.chev {
+  width: 11px;
+  height: 11px;
+  margin-left: 4px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.4;
+  vertical-align: middle;
+}
+
+/* Brown call-to-action at the right of the header. */
+.cta {
+  margin-left: 10px;
+  padding: 12px 20px;
+  background: var(--brown);
+  font-size: 15px;
+  color: #fff;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s ease;
+}
+
+.cta:hover {
+  background: var(--gold-dark);
+}
+
+.item:hover .top,
+.item:focus-within .top {
+  color: var(--gold-ink);
+}
+
+.item {
+  position: relative;
+}
+
+/* Items with a mega menu let the panel span the full navigation width. */
+.itemMega {
+  position: static;
+}
+
+/* Small dropdown: one column of links under its item. */
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 270px;
+  padding: 22px 28px 24px;
+  border-top: 2px solid var(--brown);
+  background: var(--paper);
+  box-shadow: 0 22px 40px rgba(60, 36, 20, 0.1);
+}
+
+/* Mega menu: a full-width panel just under the navigation, scrolling with the page. */
+.mega {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  padding: 44px 40px 48px;
+  border-top: 1px solid var(--line);
+  background: var(--paper);
+  box-shadow: 0 30px 50px rgba(60, 36, 20, 0.1);
+}
+
+/* Both fade and drop in; hidden ones take no clicks. */
+.dropdown,
+.mega {
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 0.25s ease,
+    transform 0.25s ease,
+    visibility 0s linear 0.25s;
+}
+
+.item:hover .dropdown,
+.item:focus-within .dropdown,
+.item:hover .mega,
+.item:focus-within .mega {
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  transition-delay: 0s;
+}
+
+/* Just clicked: stay closed until the pointer leaves the item. */
+.item[data-closed="true"] .dropdown,
+.item[data-closed="true"] .mega {
+  visibility: hidden;
+  opacity: 0;
+  transition: none;
+}
+
+/* Link columns, divided by fine rules, with the photo card at the end. */
+.megaInner {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 250px)) minmax(0, 340px);
+  justify-content: center;
+  max-width: 1500px;
+  margin: 0 auto;
+}
+
+.megaInner .col {
+  padding: 0 30px;
+  border-left: 1px solid var(--line);
+}
+
+.megaInner .col:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.col {
+  display: flex;
+  flex-direction: column;
+}
+
+/* A small brown dash slides in before the link on hover. */
+.col a {
+  position: relative;
+  padding: 7px 0;
+  font-size: 15px;
+  color: var(--ink-soft);
+  text-decoration: none;
+  transition:
+    color 0.2s ease,
+    padding 0.25s ease;
+}
+
+.col a::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: var(--brown);
+  transition: width 0.25s ease;
+}
+
+.col a:hover {
+  padding-left: 18px;
+  color: var(--gold-ink);
+}
+
+.col a:hover::before {
+  width: 12px;
+}
+
+.colTitle {
+  margin-bottom: 14px;
+  font-family: var(--font-serif);
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--ink);
+}
+
+/* Photo card: words over a soft dark fade at the bottom, the photo easing in on hover. */
+.feature {
+  position: relative;
+  display: block;
+  align-self: start;
+  aspect-ratio: 4 / 3.4;
+  margin-left: 10px;
+  overflow: hidden;
+  color: #fff;
+  text-decoration: none;
+}
+
+.feature img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.feature::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(30, 20, 14, 0.7));
+}
+
+.feature:hover img {
+  transform: scale(1.06);
+}
+
+.featureText {
+  position: absolute;
+  right: 22px;
+  bottom: 20px;
+  left: 22px;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.featureText small {
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #f1d3ad;
+}
+
+.featureText strong {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 400;
+  line-height: 1.2;
+}
+
+.featureText em {
+  align-self: flex-start;
+  margin-top: 8px;
+  padding-bottom: 2px;
+  border-bottom: 1px solid currentColor;
+  font-size: 14px;
+  font-style: normal;
+}
+
+/* ---------- Search ---------- */
+.search {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 40px;
+  border-top: 1px solid var(--line);
+}
+
+.search > svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--muted);
+  stroke-width: 1.5;
+}
+
+.search input {
+  flex: 1;
+  padding: 10px 0;
+  border: 0;
+  outline: none;
+  font: inherit;
+  font-size: 16px;
+  color: var(--ink);
+}
+
+/* ---------- Drawers (bag, phone menu) ---------- */
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+.drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 41;
+  display: flex;
+  flex-direction: column;
+  width: min(400px, 88vw);
+  background: var(--card);
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.15);
+}
+
+.drawerLeft {
+  left: 0;
+}
+
+.drawerRight {
+  right: 0;
+}
+
+.drawerHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px 14px 24px;
+  border-bottom: 1px solid var(--line);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+}
+
+.mobileList {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.mobileList > li {
+  border-bottom: 1px solid var(--line);
+}
+
+.mobileTop {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 16px 24px;
+  border: 0;
+  background: none;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-align: left;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.mobileSub {
+  padding: 0 24px 16px;
+}
+
+.mobileSub p {
+  margin: 10px 0 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.mobileSub a {
+  display: block;
+  padding: 7px 0;
+  font-size: 14px;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.bagEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  padding: 60px 24px;
+}
+
+.bagList {
+  flex: 1;
+  overflow-y: auto;
+  list-style: none;
+}
+
+.bagList li {
+  display: flex;
+  gap: 16px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.bagList img {
+  flex: none;
+  width: 84px;
+  height: 84px;
+  object-fit: contain;
+  border: 1px solid var(--line);
+}
+
+.bagList a {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  line-height: 1.5;
+  text-transform: uppercase;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.bagList p {
+  margin-top: 6px;
+  font-size: 13px;
+}
+
+.bagList button {
+  margin-top: 6px;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 12px;
+  color: var(--muted);
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.bagFoot {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px 24px 24px;
+  border-top: 1px solid var(--line);
+}
+
+.bagFoot p {
+  display: flex;
+  justify-content: space-between;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.bagFoot small {
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.bagFoot button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* Six menu items: tighten their spacing on mid-size screens so each stays on one line. */
+@media (max-width: 1500px) {
+  .top {
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .top {
+    padding-left: 8px;
+    padding-right: 8px;
+    font-size: 15px;
+  }
+
+  /* "Custom Ring" in the menu covers it, so the button makes room on smaller laptops. */
+  .cta {
+    display: none;
+  }
+
+  .bar {
+    padding: 0 24px;
+  }
+}
+
+/* Small laptops, just before the phone menu takes over. */
+@media (max-width: 1060px) {
+  .top {
+    padding-left: 4px;
+    padding-right: 4px;
+    font-size: 14px;
+  }
+
+  .wordmark {
+    font-size: 24px;
+  }
+
+  .bar {
+    padding: 0 12px;
+  }
+}
+
+@media (max-width: 900px) {
+  .header[data-home] {
+    background: var(--paper);
+  }
+
+  .bar[data-scrolled="true"] .wordmark {
+    font-size: 21px;
+  }
+
+  .promo {
+    grid-template-columns: 1fr;
+    padding: 8px 16px;
+    font-size: 10px;
+    letter-spacing: 0.1em;
+  }
+
+  .promoSide {
+    display: none;
+  }
+
+  .bar {
+    grid-template-columns: 1fr auto;
+    padding: 12px 10px;
+  }
+
+  .menuButton {
+    display: grid;
+  }
+
+  .cta {
+    display: none;
+  }
+
+  .left {
+    gap: 0;
+  }
+
+  .wordmark {
+    font-size: 21px;
+  }
+
+  .tagline {
+    margin-top: 6px;
+    font-size: 7px;
+  }
+
+  .nav {
+    display: none;
+  }
+
+  .search {
+    padding: 10px 16px;
+  }
+}

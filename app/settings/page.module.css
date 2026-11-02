@@ -1,0 +1,78 @@
+.intro {
+  max-width: 1120px;
+  margin: 28px auto 40px;
+  text-align: center;
+}
+
+.intro h1 {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.intro p {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--ink-soft);
+}
+
+/* Full-width band with a framed strip, like a printed notice. */
+.banner {
+  padding: 8px 8px;
+  background: var(--sand);
+}
+
+.banner > div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 14px 22px;
+  padding: 14px 24px;
+  border: 1.5px solid var(--ink);
+}
+
+.banner h2 {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.banner p {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.banner :global(.btn-outline) {
+  padding: 8px 22px;
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .intro {
+    margin: 16px auto 28px;
+  }
+
+  .intro h1 {
+    font-size: 27px;
+  }
+
+  .intro p {
+    font-size: 14px;
+  }
+
+  .banner h2 {
+    font-size: 21px;
+  }
+
+  .banner > div {
+    flex-direction: column;
+    text-align: center;
+  }
+}

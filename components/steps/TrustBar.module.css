@@ -1,0 +1,100 @@
+.bar {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+}
+
+.bar li {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 26px 16px;
+}
+
+.bar li + li {
+  border-left: 1px solid var(--line);
+}
+
+.bar svg {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: var(--gold-ink);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.bar span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.bar strong {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.bar small {
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* Product page: a tighter two-by-two block. */
+.bar[data-compact] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border: 1px solid var(--line);
+  border-radius: 0;
+}
+
+.bar[data-compact] li {
+  justify-content: flex-start;
+  padding: 16px 18px;
+}
+
+.bar[data-compact] li:nth-child(3) {
+  border-left: 0;
+}
+
+.bar[data-compact] li:nth-child(n + 3) {
+  border-top: 1px solid var(--line);
+}
+
+.bar[data-compact] svg {
+  width: 24px;
+  height: 24px;
+}
+
+.bar[data-compact] strong {
+  font-size: 11px;
+}
+
+.bar[data-compact] small {
+  font-size: 12px;
+}
+
+@media (max-width: 900px) {
+  .bar {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .bar li {
+    justify-content: flex-start;
+    padding: 18px 12px;
+  }
+
+  .bar li:nth-child(3) {
+    border-left: 0;
+  }
+
+  .bar li:nth-child(n + 3) {
+    border-top: 1px solid var(--line);
+  }
+}

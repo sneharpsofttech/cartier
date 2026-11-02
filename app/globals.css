@@ -1,27 +1,56 @@
+/*
+ * Design tokens: a warm cream boutique. Cream pages, beige bands, black type
+ * and square black buttons, a brown accent (links, labels, the footer), and a
+ * single elegant serif (Marcellus) for everything. Black stays in small doses
+ * (the top strip, buttons) through the .noir scope below.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #fff9f4;
+  --card: #ffffff;
+  --card-2: #faf1e7;
+  --sand: #f5e7d6;
+  --ink: #111111;
+  --ink-soft: #585858;
+  --muted: #686868;
+  --line: #ecdfd1;
+  --line-strong: #d9c6b1;
+  --gold: #111111;
+  --gold-dark: #8c6446;
+  --gold-soft: #f5e7d6;
+  --gold-ink: #8c6446;
+  --on-gold: #ffffff;
+  --brown: #ac805d;
+  --footer: #ac805d;
+  --photo: #ffffff;
+  --sale: #b4432f;
+  --accent: #111111;
+  --radius: 0px;
+  /* Width of the home hero's beige column (the header shares the split). */
+  --hero-rail: 29.8%;
+  --shadow: 0 1px 2px rgba(60, 40, 20, 0.05), 0 14px 34px rgba(60, 40, 20, 0.08);
+
+  --font-sans: var(--font-text), Georgia, "Times New Roman", serif;
+  --font-serif: var(--font-display), Georgia, "Times New Roman", serif;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+/* Black sections: the same tokens, redefined, so anything inside just works. */
+.noir {
+  --paper: #111111;
+  --card: #1b1b1b;
+  --card-2: #242424;
+  --ink: #fff9f4;
+  --ink-soft: #d9d2ca;
+  --muted: #a8a19a;
+  --line: #2c2c2c;
+  --line-strong: #474747;
+  --gold: #fff9f4;
+  --on-gold: #111111;
+  --gold-soft: #2a2420;
+  --gold-ink: #d9b48f;
+  --sale: #f08d7e;
 
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  background: var(--paper);
+  color: var(--ink);
 }
 
 * {
@@ -30,13 +59,178 @@ body {
   margin: 0;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+/* The page still scrolls (wheel, touch, keys); only the window's scrollbar is hidden. */
+html,
+body {
+  scrollbar-width: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 15px;
+  /* Marcellus has a single weight; keep everything in it rather than faking bold. */
+  font-synthesis: none;
+  /* Cormorant defaults to old-style figures; prices and carats read better lining. */
+  font-variant-numeric: lining-nums;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font: inherit;
+}
+
+/* Form controls don't inherit text colour by default. */
+input,
+select,
+textarea {
+  color: var(--ink);
+}
+
+select option {
+  background: var(--card);
+}
+
+/*
+ * Every dropdown drops the browser's own arrow and focus ring for a fine brown
+ * chevron and a thin brown focus line, so it matches the site's square fields.
+ */
+select {
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 36px !important;
+  border-radius: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='m2.5 4.5 3.5 3.5 3.5-3.5' fill='none' stroke='%23ac805d' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-position: right 12px center;
+  background-size: 12px;
+  background-repeat: no-repeat;
+  cursor: pointer;
+}
+
+select:focus {
+  outline: none;
+}
+
+select:focus-visible {
+  outline: 1px solid var(--brown);
+  outline-offset: 2px;
+}
+
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--gold-soft);
+}
+
+/* Shared buttons: square black for the main action, outlined for the rest. */
+.btn,
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px 32px;
+  border: 1px solid var(--gold);
+  border-radius: 0;
+  font-size: 16px;
+  letter-spacing: 0.02em;
+  text-transform: capitalize;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
+}
+
+.btn {
+  background: var(--gold);
+  color: var(--on-gold);
+}
+
+.btn:hover {
+  border-color: var(--gold-dark);
+  background: var(--gold-dark);
+  color: #fff;
+}
+
+.btn-outline {
+  border-color: var(--ink);
+  background: transparent;
+  color: var(--ink);
+}
+
+.btn-outline:hover {
+  background: var(--ink);
+  color: var(--paper);
+}
+
+/* Huge pale word behind a section title, as in a printed lookbook. */
+.ghost {
+  display: block;
+  font-family: var(--font-serif);
+  font-size: clamp(48px, 6vw, 84px);
+  line-height: 1;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  color: rgba(17, 17, 17, 0.08);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Small spaced capitals above a heading, as in "PREMIUM COLLECTION". */
+.kicker {
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+
+/* ---------- First-load reveal ---------- */
+/*
+ * While the loader shows (html[data-loading]), pieces marked data-reveal wait
+ * hidden; they then come in from a soft blur, each after its own --reveal-delay.
+ * data-reveal="wipe" also uncovers the picture from left to right.
+ */
+[data-reveal] {
+  transition:
+    opacity 0.9s ease,
+    filter 1s ease,
+    clip-path 1.3s cubic-bezier(0.65, 0, 0.35, 1);
+  transition-delay: var(--reveal-delay, 0s);
+}
+
+[data-reveal="wipe"] {
+  clip-path: inset(0 0 0 0);
+}
+
+html[data-loading] [data-reveal] {
+  opacity: 0;
+  filter: blur(14px);
+}
+
+html[data-loading] [data-reveal="wipe"] {
+  opacity: 1;
+  filter: blur(10px);
+  clip-path: inset(0 100% 0 0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal] {
+    transition-duration: 0.3s;
+  }
+
+  html[data-loading] [data-reveal] {
+    filter: none;
+    clip-path: none;
   }
 }

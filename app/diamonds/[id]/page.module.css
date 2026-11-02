@@ -1,0 +1,416 @@
+.page {
+  min-height: 100dvh;
+}
+
+.main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 32px 40px 0;
+}
+
+.crumbs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 34px 0 24px;
+  font-size: 14px;
+  color: var(--muted);
+}
+
+.crumbs a {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  color: var(--gold-ink);
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: clamp(32px, 4.5vw, 80px);
+  align-items: start;
+}
+
+/* ---------- Picture ---------- */
+/* The info column scrolls past while the picture stays in view. */
+.media {
+  position: sticky;
+  top: 90px;
+}
+
+/* The stone renders sit on this same beige, so they melt into the stage. */
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: radial-gradient(55% 55% at 50% 48%, #fbf7f1, #f3ebe0 72%);
+}
+
+.stage img {
+  width: 82%;
+  aspect-ratio: 1;
+  object-fit: contain;
+  transition: transform 0.7s ease;
+}
+
+.stage:hover img {
+  transform: scale(1.08);
+}
+
+.badges {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.badges span {
+  padding: 6px 12px;
+  background: var(--brown);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: #fff;
+}
+
+.mediaFoot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px 20px;
+  margin-top: 14px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+.mediaFoot strong {
+  margin-left: 6px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+/* ---------- Words ---------- */
+.kicker {
+  font-size: 12px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+
+.title {
+  margin-top: 12px;
+  font-family: var(--font-serif);
+  font-size: clamp(32px, 2.7vw, 48px);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.meta {
+  margin-top: 10px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--muted);
+}
+
+.priceRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 6px 16px;
+  margin-top: 22px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+
+.price {
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 2.3vw, 40px);
+  color: var(--gold-ink);
+}
+
+.priceNote {
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+/* ---------- Grade cards ---------- */
+.grades {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 26px;
+}
+
+.grade {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 18px 20px;
+  background: var(--sand);
+}
+
+.gradeHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.gradeHead span {
+  font-size: 12px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold-ink);
+}
+
+.gradeHead strong {
+  font-family: var(--font-serif);
+  font-size: 24px;
+  font-weight: 400;
+  text-align: right;
+}
+
+/* One segment per grade, best on the left; this stone's grade fills brown. */
+.scale {
+  display: flex;
+  gap: 3px;
+  list-style: none;
+}
+
+.scale li {
+  flex: 1;
+  height: 6px;
+  background: rgba(140, 100, 70, 0.22);
+}
+
+.scale li[data-on] {
+  background: var(--brown);
+  box-shadow: 0 0 0 2px var(--sand), 0 0 0 3px var(--brown);
+}
+
+.scaleEnds {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.gradeNote {
+  font-size: 13px;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+/* ---------- Buttons ---------- */
+.actions {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.primary,
+.secondary {
+  display: grid;
+  place-items: center;
+  padding: 17px 20px;
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-align: center;
+  text-transform: uppercase;
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.primary {
+  background: var(--brown);
+  color: #fff;
+}
+
+.primary:hover {
+  background: var(--gold-dark);
+}
+
+.secondary {
+  border: 1px solid var(--brown);
+  color: var(--gold-ink);
+}
+
+.secondary:hover {
+  background: var(--brown);
+  color: #fff;
+}
+
+.next {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Promises ---------- */
+.promises {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  margin-top: 28px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  list-style: none;
+}
+
+.promises li {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 18px 14px;
+}
+
+.promises li + li {
+  border-left: 1px solid var(--line);
+}
+
+.promises svg {
+  flex: none;
+  width: 30px;
+  height: 30px;
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.promises span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.promises strong {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+/* ---------- Full details ---------- */
+.details {
+  margin-top: 90px;
+}
+
+.detailsHead {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.detailsHead h2 {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  font-size: clamp(28px, 2.4vw, 42px);
+  font-weight: 400;
+}
+
+.groups {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 20px;
+}
+
+.group {
+  padding: 26px 28px 18px;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.group h3 {
+  margin-bottom: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--brown);
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 400;
+}
+
+.group dl > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid var(--line);
+  font-size: 14px;
+}
+
+.group dl > div:last-child {
+  border-bottom: 0;
+}
+
+.group dt {
+  color: var(--muted);
+}
+
+.group dd {
+  text-align: right;
+  color: var(--ink);
+}
+
+@media (max-width: 1100px) {
+  .groups {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .main {
+    padding: 18px 16px 0;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .media {
+    position: static;
+  }
+
+  .actions,
+  .groups {
+    grid-template-columns: 1fr;
+  }
+
+  .details {
+    margin-top: 60px;
+  }
+}
+
+@media (max-width: 520px) {
+  .grades {
+    grid-template-columns: 1fr;
+  }
+
+  .promises {
+    grid-template-columns: 1fr;
+  }
+
+  .promises li + li {
+    border-top: 1px solid var(--line);
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage img {
+    transition: none;
+  }
+}

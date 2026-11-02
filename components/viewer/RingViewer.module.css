@@ -1,0 +1,269 @@
+/* Fills the box the setting page gives it. */
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--card);
+}
+
+.layout {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.viewer {
+  --panel: rgba(255, 253, 249, 0.9);
+  --shadow: 0 6px 22px rgba(20, 20, 40, 0.12), 0 1px 3px rgba(20, 20, 40, 0.08);
+
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  color: var(--ink);
+  transition: background 0.4s ease;
+  user-select: none;
+}
+
+.canvas {
+  position: absolute !important;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+  touch-action: none;
+  cursor: grab;
+}
+
+.canvas:active {
+  cursor: grabbing;
+}
+
+.canvasReady {
+  opacity: 1;
+}
+
+/* Header */
+.header {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  pointer-events: none;
+}
+
+.mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--card);
+  box-shadow: var(--shadow);
+  color: var(--gold-ink);
+  font-size: 18px;
+}
+
+.title {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.subtitle {
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* Toolbar */
+.toolbar,
+.zoom {
+  position: absolute;
+  right: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 6px;
+  border-radius: 0;
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+}
+
+.toolbar {
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.zoom {
+  bottom: 24px;
+}
+
+.tool {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--ink);
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+}
+
+.tool:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+
+.tool:active {
+  transform: scale(0.92);
+}
+
+.tool[data-active="true"] {
+  background: var(--accent);
+  color: var(--on-gold);
+  box-shadow: 0 4px 12px rgba(214, 150, 160, 0.35);
+}
+
+/* Settings */
+.settings {
+  position: absolute;
+  top: 50%;
+  right: 72px;
+  transform: translateY(-50%);
+  width: 220px;
+  padding: 16px;
+  border-radius: 0;
+  background: var(--panel);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-size: 13px;
+  animation: pop 0.2s ease;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field input[type="range"] {
+  accent-color: var(--accent);
+}
+
+.check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.check input {
+  accent-color: var(--accent);
+}
+
+.bgRow {
+  display: flex;
+  gap: 8px;
+}
+
+.bgChip {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+}
+
+.bgChip[data-active="true"] {
+  outline: 2px solid var(--gold-ink);
+  outline-offset: 2px;
+}
+
+.hint {
+  position: absolute;
+  left: 18px;
+  bottom: 22px;
+  font-size: 11px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+}
+
+.settings {
+  animation-name: popSide;
+}
+
+@keyframes popSide {
+  from {
+    opacity: 0;
+    transform: translate(8px, -50%);
+  }
+}
+
+@media (max-width: 860px) {
+  /* Stacked on phones: viewer on top, options below, page scrolls. */
+  .shell {
+    height: auto;
+    overflow: visible;
+  }
+
+  .layout {
+    flex-direction: column;
+    overflow: visible;
+  }
+
+  .viewer {
+    flex: none;
+    height: 56dvh;
+  }
+
+  .layout > aside {
+    flex: 1;
+    min-height: 0;
+  }
+
+  .hint {
+    display: none;
+  }
+
+  .header {
+    top: 14px;
+    left: 14px;
+  }
+
+  .toolbar {
+    top: 14px;
+    right: 12px;
+    transform: none;
+  }
+
+  .zoom {
+    right: 12px;
+    bottom: 14px;
+  }
+
+  .settings {
+    top: 14px;
+    right: 64px;
+    width: 190px;
+    transform: none;
+    animation: none;
+  }
+}

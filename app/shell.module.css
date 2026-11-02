@@ -1,0 +1,77 @@
+/* Page frame shared by the catalogue pages. */
+.page {
+  min-height: 100dvh;
+}
+
+.main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 28px 40px 0;
+}
+
+/* "Home / Collections /" above the page title. */
+.crumbs {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--ink);
+}
+
+.crumbs a {
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  text-decoration: underline;
+}
+
+.intro {
+  max-width: 860px;
+  margin: 36px auto 56px;
+  text-align: center;
+}
+
+.intro h1 {
+  margin-top: 10px;
+  font-family: var(--font-serif);
+  font-size: 35px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.intro p {
+  margin-top: 18px;
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+}
+
+@media (max-width: 900px) {
+  .main {
+    padding: 20px 16px 0;
+  }
+
+  .intro {
+    margin: 20px auto 32px;
+  }
+
+  .intro h1 {
+    font-size: 24px;
+  }
+
+  .intro p {
+    font-size: 14px;
+  }
+}
+
+/* Shop pages: room between the category band and the grid. */
+.shopMain {
+  padding-top: 80px;
+}
+
+@media (max-width: 900px) {
+  .shopMain {
+    padding-top: 32px;
+  }
+}

@@ -1,0 +1,239 @@
+/* Warm brown with a soft scatter of out-of-focus sparkles. */
+.footer {
+  margin-top: 80px;
+  padding: 80px 0 0;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(255, 236, 205, 0.32) 0 2px, transparent 6px) 0 0 / 240px 200px,
+    radial-gradient(circle at 70% 60%, rgba(255, 236, 205, 0.22) 0 1.5px, transparent 5px) 40px 60px / 180px 160px,
+    radial-gradient(circle at 40% 80%, rgba(255, 255, 255, 0.12) 0 4px, transparent 12px) 90px 20px / 320px 280px,
+    #ac805d;
+  color: #fff;
+}
+
+/* Runs straight on from a full-width band above it. */
+.footer[data-flush] {
+  margin-top: 0;
+}
+
+/* Columns follow the reference at 1620px: gallery, three link lists, then the brand. */
+.cols,
+.bottom {
+  max-width: 1760px;
+  margin: 0 auto;
+  padding: 0 70px;
+}
+
+.cols {
+  display: grid;
+  grid-template-columns: minmax(0, 405fr) minmax(0, 300fr) minmax(0, 300fr) minmax(0, 405fr);
+  gap: 40px 0;
+  padding-bottom: 70px;
+}
+
+.footer h4 {
+  margin-bottom: 26px;
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 1.3vw, 25px);
+  font-weight: 400;
+  line-height: 1.3;
+}
+
+.cols nav {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.cols nav a {
+  font-size: 16px;
+  line-height: 30px;
+  color: #fff;
+  text-decoration: none;
+  transition: opacity 0.2s ease;
+}
+
+.cols nav a:hover {
+  opacity: 0.75;
+}
+
+.tiles {
+  display: grid;
+  grid-template-columns: repeat(3, 95px);
+  gap: 10px;
+}
+
+.tiles a {
+  display: block;
+  aspect-ratio: 1;
+  overflow: hidden;
+}
+
+.tiles img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.tiles a:hover img {
+  transform: scale(1.08);
+}
+
+/* The DAZORA wordmark with its tagline, as in the header. */
+.logo {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 26px;
+  color: #fff;
+  text-decoration: none;
+}
+
+.logo span {
+  margin-right: -0.24em;
+  font-family: var(--font-serif);
+  font-size: clamp(30px, 2.1vw, 40px);
+  letter-spacing: 0.24em;
+  line-height: 1;
+}
+
+.logo small {
+  margin: 10px -0.32em 0 0;
+  font-size: 11px;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.brand p {
+  max-width: 410px;
+  font-size: 16px;
+  line-height: 30px;
+}
+
+.contact {
+  display: flex;
+  flex-direction: column;
+  margin-top: 18px;
+}
+
+.contact a {
+  color: #fff;
+  text-decoration: none;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+}
+
+.bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px 30px;
+  font-size: 16px;
+}
+
+/* The divider spans the content width, not the full band. */
+.bottom::before {
+  content: "";
+  flex-basis: 100%;
+  height: 1px;
+  margin-bottom: 22px;
+  background: rgba(245, 231, 214, 0.75);
+}
+
+.bottom p {
+  padding-bottom: 32px;
+}
+
+.bottom p:last-child {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 1100px) {
+  .cols,
+  .bottom {
+    padding: 0 32px;
+  }
+
+  .cols {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 44px 30px;
+    padding-bottom: 56px;
+  }
+}
+
+@media (max-width: 760px) {
+  .footer {
+    margin-top: 60px;
+    padding-top: 56px;
+  }
+
+  .cols,
+  .bottom {
+    padding: 0 16px;
+  }
+
+  .cols {
+    grid-template-columns: 1fr 1fr;
+    gap: 36px 20px;
+  }
+
+  .cols > div {
+    grid-column: 1 / -1;
+  }
+
+  .tiles {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .bottom {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .bottom p {
+    padding-bottom: 0;
+  }
+
+  .bottom p:last-child {
+    padding-bottom: 28px;
+  }
+}
+
+.toTop {
+  position: fixed;
+  right: 22px;
+  bottom: 22px;
+  z-index: 25;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toTop[data-shown="true"] {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.toTop:hover {
+  transform: rotate(45deg);
+}
+
+.toTop svg {
+  width: 30px;
+  height: 30px;
+  fill: #111;
+}

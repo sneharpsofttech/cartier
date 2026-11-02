@@ -1,0 +1,147 @@
+/* Full-screen cream cover with the DAZORA mark; fades away once the page is ready. */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(60% 60% at 50% 45%, #fbf6ef, #f4ece1);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.7s ease, visibility 0s linear 0.7s;
+}
+
+/* Shown only while the page is still loading (and only when scripts run, so it can be dismissed). */
+:global(html[data-loading]) .loader {
+  opacity: 1;
+  visibility: visible;
+  transition: none;
+}
+
+.mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 240px;
+  height: 240px;
+  animation: markIn 0.8s ease both;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  animation: spin 2.2s cubic-bezier(0.45, 0.1, 0.4, 0.9) infinite;
+}
+
+/* The D in a bronze-to-gold sheen, with a small star in its bowl. */
+.letter {
+  position: relative;
+  font-family: var(--font-serif);
+  font-size: 134px;
+  line-height: 1;
+  background: linear-gradient(165deg, #d2a877 0%, #9a6a42 45%, #6e4529 70%, #b98a5d 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.spark {
+  position: absolute;
+  top: 43%;
+  left: 49%;
+  width: 16px;
+  height: 16px;
+  fill: #8a5d3b;
+  transform: translate(-50%, -50%);
+  animation: twinkle 1.6s ease-in-out infinite;
+}
+
+.word {
+  margin-top: 26px;
+  padding-left: 0.26em;
+  font-family: var(--font-serif);
+  font-size: 46px;
+  letter-spacing: 0.26em;
+  line-height: 1;
+  color: #5c3b27;
+  animation: textIn 0.9s 0.2s ease both;
+}
+
+.tag {
+  margin-top: 16px;
+  padding-left: 0.3em;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #6f5444;
+  animation: textIn 0.9s 0.35s ease both;
+}
+
+/* While fading out, the mark drifts back a little. */
+:global(html:not([data-loading])) .mark,
+:global(html:not([data-loading])) .word,
+:global(html:not([data-loading])) .tag {
+  transform: scale(0.96);
+  transition: transform 0.7s ease;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes twinkle {
+  50% {
+    opacity: 0.45;
+    transform: translate(-50%, -50%) scale(0.7) rotate(45deg);
+  }
+}
+
+@keyframes markIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+}
+
+@keyframes textIn {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+    transform: translateY(8px);
+  }
+}
+
+@media (max-width: 760px) {
+  .mark {
+    width: 160px;
+    height: 160px;
+  }
+
+  .letter {
+    font-size: 90px;
+  }
+
+  .word {
+    font-size: 30px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ring,
+  .spark {
+    animation-duration: 6s;
+  }
+
+  .mark,
+  .word,
+  .tag {
+    animation: none;
+  }
+}

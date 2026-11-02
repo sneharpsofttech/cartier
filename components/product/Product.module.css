@@ -1,0 +1,416 @@
+.layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  gap: 56px;
+  align-items: start;
+  margin-top: 28px;
+}
+
+/* ---------- Gallery ---------- */
+.gallery {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  gap: 28px;
+}
+
+.thumbs {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.thumbs button {
+  position: relative;
+  aspect-ratio: 1;
+  padding: 2px;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.thumbs button > span {
+  background: #fff;
+}
+
+.thumbs button[data-active="true"] {
+  border-color: var(--ink);
+}
+
+.thumb3d {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+
+.thumb3d svg {
+  width: 26px;
+  height: 26px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+.thumb3d span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  color: var(--ink);
+}
+
+.stage,
+.stage > span {
+  background: #fff;
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+.stage canvas {
+  cursor: grab;
+}
+
+.hint {
+  position: absolute;
+  bottom: 10px;
+  left: 0;
+  right: 0;
+  font-size: 12px;
+  text-align: center;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.loading3d {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  font-size: 13px;
+  color: var(--muted);
+}
+
+/* ---------- Details ---------- */
+.info {
+  position: sticky;
+  top: 124px;
+}
+
+.trust {
+  margin-top: 22px;
+}
+.info h1 {
+  margin-top: 14px;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.crumbs {
+  font-size: 12px;
+}
+
+.crumbs a {
+  text-decoration: none;
+}
+
+.sku {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.price {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+  margin-top: 26px;
+  font-size: 16px;
+}
+
+.price s {
+  color: var(--muted);
+}
+
+.price em {
+  font-style: normal;
+  color: var(--sale);
+}
+
+.small {
+  margin-top: 10px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.info hr {
+  margin: 22px 0;
+  border: 0;
+  border-top: 1px solid var(--line-strong);
+}
+
+.stock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.stock svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: var(--ink);
+  stroke-width: 1.4;
+}
+
+.cart {
+  width: 100%;
+  margin-top: 22px;
+  padding: 15px;
+  font-size: 13px;
+}
+
+.description {
+  margin-top: 22px;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* Details as a two-column list on warm sand: label on the left, value on the right. */
+.specs {
+  margin-top: 22px;
+  padding: 6px 22px;
+  background: var(--sand);
+  font-size: 14px;
+}
+
+.specs > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 11px 0;
+  border-bottom: 1px solid rgba(140, 100, 70, 0.2);
+}
+
+.specs > div:last-child {
+  border-bottom: 0;
+}
+
+.specs dt {
+  color: var(--muted);
+}
+
+.specs dd {
+  text-align: right;
+  color: var(--ink);
+}
+
+/* Fold-out sections: serif titles with a round plus that turns to a minus, divided by fine rules. */
+.accordions {
+  margin-top: 30px;
+  border-top: 1px solid var(--line-strong);
+}
+
+.accordions details {
+  border-bottom: 1px solid var(--line-strong);
+}
+
+.accordions summary {
+  position: relative;
+  padding: 20px 52px 20px 0;
+  font-family: var(--font-serif);
+  font-size: 18px;
+  color: var(--ink);
+  list-style: none;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.accordions summary:hover {
+  color: var(--gold-ink);
+}
+
+.accordions summary::-webkit-details-marker {
+  display: none;
+}
+
+/*
+ * A soft beige disc with a crisp brown plus (two centred bars). Open, the disc
+ * fills brown and the upright bar goes, leaving a white minus.
+ */
+.accordions summary::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background:
+    linear-gradient(var(--brown), var(--brown)) center / 12px 1.5px no-repeat,
+    linear-gradient(var(--brown), var(--brown)) center / 1.5px 12px no-repeat,
+    var(--sand);
+  transform: translateY(-50%);
+  transition: background 0.25s ease;
+}
+
+.accordions summary:hover::after {
+  background:
+    linear-gradient(var(--brown), var(--brown)) center / 12px 1.5px no-repeat,
+    linear-gradient(var(--brown), var(--brown)) center / 1.5px 12px no-repeat,
+    #ecdcc6;
+}
+
+.accordions details[open] summary::after {
+  background:
+    linear-gradient(#fff, #fff) center / 12px 1.5px no-repeat,
+    var(--brown);
+}
+
+.accordions details[open] summary {
+  color: var(--gold-ink);
+}
+
+.accordions details p {
+  padding: 0 52px 22px 0;
+  font-size: 14px;
+  line-height: 1.8;
+  color: var(--ink-soft);
+}
+
+/* ---------- Related ---------- */
+.related {
+  margin-top: 80px;
+}
+
+.related h2 {
+  margin-bottom: 30px;
+  font-family: var(--font-serif);
+  font-size: 30px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.relatedGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 22px;
+}
+
+@media (max-width: 900px) {
+  .info {
+    position: static;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+    gap: 24px;
+    margin-top: 8px;
+  }
+
+  .gallery {
+    grid-template-columns: 1fr;
+  }
+
+  .thumbs {
+    flex-direction: row;
+    order: 2;
+  }
+
+  .thumbs button {
+    width: 64px;
+  }
+
+  .info h1 {
+    font-size: 21px;
+  }
+
+  .relatedGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* ---------- Setting product page ---------- */
+/* Metal swatches: round chips of each gold; the chosen one gets a ring. */
+.metalPick {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 20px;
+  font-size: 14px;
+  color: var(--ink-soft);
+}
+
+.metalPick strong {
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.metalPick div {
+  display: flex;
+  gap: 12px;
+}
+
+.metalPick a {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  box-shadow:
+    0 0 0 3px var(--paper),
+    0 0 0 4px var(--line-strong);
+  transition: box-shadow 0.2s ease;
+}
+
+.metalPick a[data-active="true"] {
+  box-shadow:
+    0 0 0 3px var(--paper),
+    0 0 0 5px var(--brown);
+}
+
+/* "Customise in 3D" beside "Choose a diamond", the same width. */
+.ctaRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 26px;
+}
+
+.ctaRow .cart {
+  margin-top: 0;
+  border-color: var(--brown);
+  background: var(--brown);
+  color: #fff;
+}
+
+.ctaRow .cart:hover {
+  border-color: var(--gold-dark);
+  background: var(--gold-dark);
+}
+
+.ghost {
+  display: grid;
+  place-items: center;
+  padding: 14px 20px;
+  border: 1px solid var(--brown);
+  font-size: 14px;
+  letter-spacing: 0.08em;
+  color: var(--gold-ink);
+  text-decoration: none;
+  transition:
+    background 0.25s ease,
+    color 0.25s ease;
+}
+
+.ghost:hover {
+  background: var(--brown);
+  color: #fff;
+}

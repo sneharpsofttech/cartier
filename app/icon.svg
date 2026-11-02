@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- The loader's mark at tab size: a bronze D inside a gold ring, on a cream disc so it reads on light and dark tabs. -->
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#d2a877" />
+      <stop offset="0.45" stop-color="#9a6a42" />
+      <stop offset="0.75" stop-color="#6e4529" />
+      <stop offset="1" stop-color="#b98a5d" />
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="32" fill="#fbf6ef" />
+  <circle cx="32" cy="32" r="28.5" fill="none" stroke="url(#gold)" stroke-width="2.6" />
+  <path
+    transform="translate(32 32) scale(1.12) translate(-34 -32)"
+    fill="url(#gold)"
+    d="M21 17h10.5c9.4 0 15.5 6 15.5 15s-6.1 15-15.5 15H21v-2.6l2.6-.6V20.2l-2.6-.6zm7.4 3.2v23.6h3c6 0 9.6-4.4 9.6-11.8s-3.6-11.8-9.6-11.8z"
+  />
+  <circle cx="52.2" cy="11.8" r="3.6" fill="#d2a877" />
+</svg>

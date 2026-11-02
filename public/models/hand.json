@@ -1,0 +1,24 @@
+{
+  "source": "hand by kevinruiz, Sketchfab / Wikimedia Commons, CC BY 4.0",
+  "ringAxis": [
+    0.028065668441087772,
+    0.9865654148285751,
+    -0.1609378778258154
+  ],
+  "bounds": {
+    "min": [
+      -4.9857,
+      -13.7256,
+      -11.2428
+    ],
+    "max": [
+      5.9888,
+      5.4581,
+      1.7839
+    ]
+  },
+  "scale": 9.591858621595877,
+  "fingerRadius": 0.89725,
+  "vertices": 68785,
+  "triangles": 137408
+}

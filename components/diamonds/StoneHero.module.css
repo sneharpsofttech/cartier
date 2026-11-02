@@ -1,0 +1,259 @@
+/* Two panels: dark warm brown with the words, and a close-up photo of diamond rings. */
+.hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr);
+  min-height: clamp(420px, 30vw, 560px);
+}
+
+/* ---------- Words ---------- */
+.copy {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 60px clamp(24px, 5vw, 96px) 60px max(24px, calc((100vw - 1620px) / 2));
+  overflow: hidden;
+  color: #fff;
+  background:
+    radial-gradient(70% 90% at 85% 20%, rgba(172, 128, 93, 0.35), transparent 70%),
+    linear-gradient(130deg, #1c1410, #2e2119 55%, #3b2b20);
+}
+
+/* Faint facet lines, like light through a cut stone. */
+.copy::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    repeating-linear-gradient(60deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 90px),
+    repeating-linear-gradient(-60deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 90px);
+  pointer-events: none;
+}
+
+.copy > * {
+  position: relative;
+  max-width: 640px;
+}
+
+.crumbs {
+  display: flex;
+  gap: 10px;
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.crumbs a {
+  color: rgba(255, 255, 255, 0.85);
+  text-decoration: none;
+}
+
+.crumbs a:hover {
+  color: #fff;
+}
+
+.kicker {
+  margin-top: 30px;
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: #d9b48f;
+}
+
+.copy h1 {
+  margin-top: 14px;
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 3.6vw, 66px);
+  font-weight: 400;
+  line-height: 1.08;
+}
+
+.lead {
+  margin-top: 20px;
+  font-size: 16px;
+  line-height: 1.85;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+/* Collection sizes, divided by thin rules. */
+.facts {
+  display: flex;
+  gap: 0;
+  margin: 36px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.facts li {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 0 28px;
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.facts li:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.facts strong {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 2vw, 36px);
+  font-weight: 400;
+  line-height: 1;
+  color: #f1d3ad;
+}
+
+.facts span {
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---------- Photo ---------- */
+.stage {
+  position: relative;
+  overflow: hidden;
+  background: #2e2119;
+}
+
+.photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 55% 78%;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+
+/* Fades the photo's left edge into the dark panel, so the two read as one piece. */
+.stage::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(90deg, #3b2b20 0%, rgba(59, 43, 32, 0.55) 14%, transparent 38%);
+  pointer-events: none;
+}
+
+/* Frosted card in the lower-left corner, clear of the rings. */
+.cert {
+  position: absolute;
+  left: clamp(20px, 3vw, 48px);
+  bottom: clamp(20px, 3vw, 44px);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  max-width: 330px;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 249, 244, 0.72);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 18px 40px rgba(40, 24, 14, 0.18);
+}
+
+.cert svg {
+  flex: none;
+  width: 40px;
+  height: 40px;
+  fill: none;
+  stroke: var(--brown);
+  stroke-width: 1.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.cert p {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cert strong {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--ink);
+}
+
+.cert span {
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--ink-soft);
+}
+
+@keyframes drift {
+  from {
+    transform: scale(1.02);
+  }
+  to {
+    transform: scale(1.06);
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    grid-template-columns: 1fr;
+  }
+
+  .copy {
+    padding: 44px 20px;
+  }
+
+  .stage {
+    min-height: 400px;
+  }
+
+  .stage::before {
+    background: linear-gradient(180deg, #3b2b20 0%, transparent 22%);
+  }
+
+  /* A compact label up top, so it leaves both rings in view. */
+  .cert {
+    top: 34px;
+    bottom: auto;
+    left: 16px;
+    gap: 10px;
+    padding: 10px 14px;
+  }
+
+  .cert svg {
+    width: 28px;
+    height: 28px;
+  }
+
+  .cert strong {
+    font-size: 15px;
+  }
+
+  .cert span {
+    display: none;
+  }
+
+  .facts li {
+    padding: 0 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .facts {
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .facts li {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 10px;
+    padding: 0;
+    border-left: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo {
+    animation: none;
+  }
+}

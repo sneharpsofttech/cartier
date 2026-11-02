@@ -1,0 +1,236 @@
+.range,
+.grade {
+  --accent: var(--gold-dark);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Two native range inputs stacked on one track; only their thumbs take pointer events. */
+.track {
+  position: relative;
+  height: 28px;
+}
+
+.track::before,
+.track::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  height: 3px;
+  border-radius: 0;
+  transform: translateY(-50%);
+}
+
+.track::before {
+  left: 0;
+  right: 0;
+  background: var(--line);
+}
+
+.track::after {
+  left: var(--a);
+  right: calc(100% - var(--b));
+  background: var(--accent);
+}
+
+/* Grade tracks: gaps between steps, like the reference's segmented bar. */
+.track[data-stepped]::before {
+  background: repeating-linear-gradient(
+    to right,
+    var(--line-strong) 0,
+    var(--line-strong) calc(100% / var(--steps) - 3px),
+    transparent calc(100% / var(--steps) - 3px),
+    transparent calc(100% / var(--steps))
+  );
+}
+
+/* Handles sit above the track line (the line's pseudo-element would otherwise paint over them). */
+.track input {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  width: 100%;
+  margin: 0;
+  background: none;
+  pointer-events: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.track input::-webkit-slider-runnable-track {
+  height: 28px;
+  background: none;
+}
+
+.track input::-moz-range-track {
+  height: 28px;
+  background: none;
+}
+
+.track input::-webkit-slider-thumb {
+  width: 20px;
+  height: 20px;
+  margin-top: 4px;
+  border: 2px solid var(--gold-ink);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(60, 40, 20, 0.18);
+  transition: transform 0.15s ease;
+  cursor: grab;
+  pointer-events: auto;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.track input::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--gold-ink);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(60, 40, 20, 0.18);
+  cursor: grab;
+  pointer-events: auto;
+}
+
+.track input:active::-webkit-slider-thumb,
+.track input:hover::-webkit-slider-thumb {
+  transform: scale(1.12);
+}
+
+.track input:focus-visible::-webkit-slider-thumb {
+  outline: 2px solid var(--gold-ink);
+  outline-offset: 2px;
+}
+
+/* Min and max boxes, joined by a short dash. */
+.inputs {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.inputs::before {
+  content: "";
+  order: 1;
+  flex: none;
+  width: 14px;
+  height: 1px;
+  background: var(--line-strong);
+}
+
+.field {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 2px;
+  padding: 7px 14px 8px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--paper);
+  cursor: text;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.field:last-child {
+  order: 2;
+}
+
+.field:focus-within {
+  border-color: var(--gold-ink);
+  background: var(--card);
+}
+
+.field span {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.box {
+  width: 100%;
+  padding: 0;
+  border: 0;
+  outline: none;
+  background: none;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--ink);
+}
+
+.labels {
+  display: flex;
+  justify-content: space-between;
+  margin-top: -6px;
+}
+
+.tick {
+  min-width: 0;
+  padding: 2px 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: 12px;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tick[data-in="true"] {
+  color: var(--ink);
+}
+
+.tick:hover {
+  color: var(--gold-ink);
+}
+
+/* Compact sidebar slider: a thin line with tick marks, round dark handles, short labels. */
+.range[data-compact] {
+  gap: 6px;
+}
+
+.range[data-compact] .track::before,
+.range[data-compact] .track::after {
+  height: 2px;
+}
+
+.range[data-compact] .track::after {
+  background: var(--brown);
+}
+
+.ticks i {
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 8px;
+  background: rgba(140, 100, 70, 0.55);
+  transform: translate(-50%, -50%);
+}
+
+/* Shop price handles: white with a brown ring. */
+.range[data-compact] input::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  margin-top: 5px;
+  border: 2px solid var(--brown);
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(60, 36, 20, 0.18);
+}
+
+.range[data-compact] input::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--brown);
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(60, 36, 20, 0.18);
+}
+
+.ends {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--ink-soft);
+}

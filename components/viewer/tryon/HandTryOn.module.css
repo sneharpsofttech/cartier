@@ -1,0 +1,172 @@
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--card);
+  animation: fadeIn 0.45s ease;
+}
+
+.canvas {
+  position: absolute !important;
+  inset: 0;
+  touch-action: none;
+  cursor: grab;
+}
+
+.canvas:active {
+  cursor: grabbing;
+}
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transform: translate(-50%, -50%);
+  font-size: 12px;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--line-strong);
+  border-top-color: var(--ink);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+/* Skin picker, bottom left */
+.skinDock {
+  position: absolute;
+  left: 16px;
+  bottom: 18px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  z-index: 2;
+}
+
+.skinPanel {
+  padding: 12px;
+  border-radius: 0;
+  background: rgba(255, 253, 249, 0.94);
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 22px rgba(20, 20, 40, 0.12), 0 1px 3px rgba(20, 20, 40, 0.08);
+  animation: pop 0.2s ease;
+}
+
+.skinTitle {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.skinGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 38px);
+  gap: 8px;
+}
+
+.skinThumb {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  border: 2px solid var(--card);
+  border-radius: 50%;
+  background: var(--card-2);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+button.skinThumb:hover {
+  transform: scale(1.08);
+}
+
+.skinThumb[data-active="true"] {
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.handGlyph {
+  fill: var(--skin);
+  stroke: rgba(0, 0, 0, 0.18);
+  stroke-width: 0.6;
+  stroke-linejoin: round;
+}
+
+.skinToggle {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 8px 4px 4px;
+  border: 0;
+  border-radius: 0;
+  background: var(--card);
+  box-shadow: 0 6px 22px rgba(20, 20, 40, 0.12), 0 1px 3px rgba(20, 20, 40, 0.08);
+  color: var(--ink);
+  cursor: pointer;
+}
+
+.caret {
+  transition: transform 0.2s ease;
+}
+
+.caret[data-open="false"] {
+  transform: rotate(180deg);
+}
+
+.credit {
+  position: absolute;
+  right: 72px;
+  bottom: 22px;
+  font-size: 10px;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.credit:hover {
+  text-decoration: underline;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: translateY(6px) scale(0.97);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 860px) {
+  .skinDock {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .credit {
+    right: 12px;
+    bottom: auto;
+    top: 64px;
+  }
+}
