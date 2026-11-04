@@ -304,34 +304,6 @@
   gap: 18px;
 }
 
-.views {
-  display: flex;
-  gap: 8px;
-}
-
-.views button {
-  display: grid;
-  place-items: center;
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: 1px solid var(--line-strong);
-  background: #fff;
-  color: var(--muted);
-  cursor: pointer;
-}
-
-.views button[data-on="true"] {
-  border-color: #111;
-  color: #111;
-}
-
-.views svg {
-  width: 14px;
-  height: 14px;
-  fill: currentColor;
-}
-
 .resultsBar select {
   min-width: 170px;
   padding: 10px 12px;
@@ -507,30 +479,6 @@
   color: var(--muted);
 }
 
-/* List view: photo beside the text. */
-.grid[data-view="list"] {
-  grid-template-columns: 1fr;
-}
-
-.grid[data-view="list"] .card {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  grid-template-rows: auto auto 1fr;
-  column-gap: 28px;
-  padding-bottom: 26px;
-  border-bottom: 1px solid var(--line);
-}
-
-.grid[data-view="list"] .photo {
-  grid-row: 1 / 4;
-  margin: 0;
-}
-
-.grid[data-view="list"] .title {
-  align-self: end;
-  font-size: 22px;
-}
-
 .pager {
   display: flex;
   justify-content: center;
@@ -634,10 +582,6 @@
   /* No hover on touch screens; the card itself leads to the product. */
   .hoverBar {
     display: none;
-  }
-
-  .grid[data-view="list"] .card {
-    grid-template-columns: 120px minmax(0, 1fr);
   }
 }
 

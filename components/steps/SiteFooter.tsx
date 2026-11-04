@@ -5,10 +5,10 @@ import styles from "./SiteFooter.module.css";
 /** Styled photos for the gallery tiles, each leading to the collection it shows. */
 const GALLERY = [
   { image: "/home/model-emerald-choker.webp", href: "/collections/necklaces", label: "Necklaces" },
-  { image: "/home/ring-on-hand-pink.webp", href: "/collections/gemstone-rings", label: "Gemstone rings" },
-  { image: "/home/emerald-pendant.webp", href: "/collections/necklaces", label: "Pendants" },
+  { image: "/photos/emerald-stack-rings.webp", href: "/collections/gemstone-rings", label: "Gemstone rings" },
+  { image: "/photos/rose-gold-necklace.webp", href: "/collections/necklaces", label: "Pendants" },
   { image: "/home/bride-veil.webp", href: "/settings", label: "Engagement rings" },
-  { image: "/home/band-bracelet.webp", href: "/collections/bracelets", label: "Bracelets" },
+  { image: "/photos/spiral-bracelet.webp", href: "/collections/bracelets", label: "Bracelets" },
   { image: "/home/pendant-set.webp", href: "/collections/earrings", label: "Earrings" },
 ];
 

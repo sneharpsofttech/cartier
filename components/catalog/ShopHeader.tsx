@@ -37,8 +37,8 @@ const BAND = [
 ];
 
 /**
- * The shop page's header: title, a line about the collection, breadcrumbs and
- * the number of pieces on warm sand, beside a photo that fades into it; then a
+ * The shop page's header: title, a line about the collection and breadcrumbs
+ * on warm sand, beside a photo that fades into it; then a
  * brown band of categories that scrolls on its own.
  */
 export default function ShopHeader({
@@ -46,13 +46,14 @@ export default function ShopHeader({
   crumb,
   intro,
   image = "/home/diamond-set.webp",
-  count,
+  focus,
 }: {
   title: string;
   crumb?: { label: string; href: string };
   intro?: string;
   image?: string;
-  count?: number;
+  /** Which part of the photo stays in view when it is cropped to the banner (CSS object-position). */
+  focus?: string;
 }) {
   return (
     <>
@@ -71,15 +72,10 @@ export default function ShopHeader({
           </nav>
           <h1>{title}</h1>
           {intro && <p className={styles.intro}>{intro}</p>}
-          {count !== undefined && (
-            <p className={styles.count}>
-              <strong>{count}</strong> {count === 1 ? "piece" : "pieces"} · Handcrafted to order
-            </p>
-          )}
         </div>
         <div className={styles.photo}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={image} alt="" />
+          <img src={image} alt="" style={focus ? { objectPosition: focus } : undefined} />
         </div>
       </header>
       <div className={styles.band}>

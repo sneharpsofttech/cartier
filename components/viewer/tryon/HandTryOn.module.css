@@ -170,3 +170,112 @@ button.skinThumb:hover {
     top: 64px;
   }
 }
+
+/* Turning-hand video: the frames at their own proportions, the ring layer exactly over them. */
+.videoStage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #9a9a9a;
+  animation: fadeIn 0.45s ease;
+}
+
+.videoFrame {
+  position: relative;
+  flex: none;
+  width: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  touch-action: pan-y;
+  cursor: grab;
+}
+
+.videoFrame:active {
+  cursor: grabbing;
+}
+
+.videoPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  visibility: hidden;
+  user-select: none;
+}
+
+.videoPhoto[data-active="true"] {
+  visibility: visible;
+}
+
+.videoCanvas {
+  position: absolute !important;
+  inset: 0;
+  pointer-events: none;
+}
+
+.videoHint {
+  position: absolute;
+  bottom: 14px;
+  left: 0;
+  right: 0;
+  font-size: 12px;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  pointer-events: none;
+}
+
+/* Earring try-on photos: the photo fills the frame, the earring layer exactly over it, views to pick from below. */
+.photoStage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #efe4d8;
+  animation: fadeIn 0.45s ease;
+}
+
+.photoImage {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  visibility: hidden;
+  user-select: none;
+}
+
+.photoImage[data-active="true"] {
+  visibility: visible;
+}
+
+.photoThumbs {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  display: flex;
+  gap: 8px;
+}
+
+.photoThumbs button {
+  width: 52px;
+  height: 52px;
+  padding: 2px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  background: rgba(255, 253, 249, 0.9);
+  cursor: pointer;
+  transition: border-color 0.2s ease;
+}
+
+.photoThumbs button[data-active="true"] {
+  border-color: var(--brown);
+}
+
+.photoThumbs img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

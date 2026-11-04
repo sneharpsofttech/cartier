@@ -167,7 +167,6 @@ export function CollectionLayout({
 }) {
   const [refine, setRefine] = useState(false);
   const [keyword, setKeyword] = useState("");
-  const [view, setView] = useState<"grid" | "list">("grid");
   const [page, setPage] = useState(1);
 
   // Keyword search narrows the cards already chosen by the filters.
@@ -231,28 +230,6 @@ export function CollectionLayout({
             Showing {first}–{last} Of {total} {total === 1 ? "Result" : "Results"}
           </p>
           <div className={styles.barTools}>
-            <div className={styles.views} role="group" aria-label="Layout">
-              <button
-                data-on={view === "grid"}
-                aria-pressed={view === "grid"}
-                aria-label="Grid"
-                onClick={() => setView("grid")}
-              >
-                <svg viewBox="0 0 16 16" aria-hidden="true">
-                  <path d="M2 2h5v5H2zM9 2h5v5H9zM2 9h5v5H2zM9 9h5v5H9z" />
-                </svg>
-              </button>
-              <button
-                data-on={view === "list"}
-                aria-pressed={view === "list"}
-                aria-label="List"
-                onClick={() => setView("list")}
-              >
-                <svg viewBox="0 0 16 16" aria-hidden="true">
-                  <path d="M2 3h12v2H2zM2 7h12v2H2zM2 11h12v2H2z" />
-                </svg>
-              </button>
-            </div>
             <select value={sort} onChange={(e) => onSort(e.target.value as SortId)} aria-label="Sort">
               {SORTS.map((s) => (
                 <option key={s.id} value={s.id}>
@@ -266,7 +243,7 @@ export function CollectionLayout({
           <p className={styles.empty}>No products match these filters.</p>
         ) : (
           <>
-            <div className={styles.grid} data-columns={columns} data-view={view}>
+            <div className={styles.grid} data-columns={columns}>
               {shown}
             </div>
             {pages > 1 && (

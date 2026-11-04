@@ -1,12 +1,13 @@
 """Render the builder's 3D images: style thumbnails and loose-stone photos.
 
 Needs the dev server running (npm run dev) and Microsoft Edge or Chrome.
-Usage: python scripts/render_thumbnails.py [styles|stones|settings|products|heroes|all] [name ...] [--base http://localhost:3000]
+Usage: python scripts/render_thumbnails.py [styles|stones|settings|products|heroes|all] [name ...] [--base http://localhost:3000] [--views 1,2,3,4]
 
   styles:   every shank and band style       -> public/thumbs/{kind}-{style}.webp
   stones:   every stone shape and colour     -> public/stones/{shape}-{tint}.webp
   settings: every ring setting in each gold  -> public/rings/{slug}-{metal}.webp
-  products: every fine jewellery piece       -> public/jewelry/{slug}.webp
+  products: every fine jewellery piece       -> public/jewelry/{slug}.webp, plus {slug}-2/-3/-4.webp from other angles
+            (--views picks which of the four, e.g. --views 2,3,4 to leave the main photos alone)
   heroes:   home page shots on a dark backdrop -> public/hero/{name}.webp
 
 Each image is drawn by the dev-only page /dev/thumbnail and screenshotted
@@ -125,7 +126,8 @@ def main():
     modes = ("styles", "stones", "settings", "products", "heroes", "all")
     what = next((a for a in sys.argv[1:] if a in modes), "styles")
     # Every other argument (except --base and its value) names what to render.
-    only = [a for i, a in enumerate(sys.argv[1:], 1) if a not in modes and not a.startswith("--") and sys.argv[i - 1] != "--base"]
+    only = [a for i, a in enumerate(sys.argv[1:], 1) if a not in modes and not a.startswith("--") and sys.argv[i - 1] not in ("--base", "--views")]
+    views = [int(v) for v in sys.argv[sys.argv.index("--views") + 1].split(",")] if "--views" in sys.argv else [1, 2, 3, 4]
     browser = next((b for b in BROWSERS if b and Path(b).exists()), None)
     if not browser:
         sys.exit("No Edge or Chrome found; set BROWSER_PATH.")
@@ -188,14 +190,16 @@ def main():
             for slug in slugs:
                 if only and not any(o in slug for o in only):
                     continue
-                for attempt in range(3):
-                    raw = Path(tmp) / f"product-{slug}-{attempt}.png"
-                    screenshot(browser, f"{base}/dev/thumbnail?kind=product&style={slug}", raw, Path(tmp) / f"profile{attempt}", window=1100)
-                    photo = trim_square(raw, margin=0.1, size=SETTING_SIZE)
-                    if looks_rendered(photo):
-                        break
-                cv2.imwrite(str(out_dir / f"{slug}.webp"), photo, [cv2.IMWRITE_WEBP_QUALITY, 88])
-                print(f"jewelry/{slug}.webp (attempt {attempt + 1})", flush=True)
+                for view in views:
+                    name = slug if view == 1 else f"{slug}-{view}"
+                    for attempt in range(3):
+                        raw = Path(tmp) / f"product-{name}-{attempt}.png"
+                        screenshot(browser, f"{base}/dev/thumbnail?kind=product&style={slug}&view={view}", raw, Path(tmp) / f"profile{attempt}", window=1100)
+                        photo = trim_square(raw, margin=0.1, size=SETTING_SIZE)
+                        if looks_rendered(photo):
+                            break
+                    cv2.imwrite(str(out_dir / f"{name}.webp"), photo, [cv2.IMWRITE_WEBP_QUALITY, 88])
+                    print(f"jewelry/{name}.webp (attempt {attempt + 1})", flush=True)
 
         if what in ("heroes", "all"):
             out_dir = public / "hero"

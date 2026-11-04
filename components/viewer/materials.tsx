@@ -3,11 +3,14 @@
 import { createContext, useContext, useMemo, useState } from "react";
 import { useFrame } from "@react-three/fiber";
 import { Environment, MeshRefractionMaterial } from "@react-three/drei";
-import { GradientDome, SoftBox } from "./studio";
+import { GradientDome, MetalStudio, SoftBox } from "./studio";
+import { METAL_OPTIONS } from "./ring/config";
 import * as THREE from "three";
 
 /** The gem environment texture, read by the refraction shader. */
 const EnvMapContext = createContext<THREE.Texture | null>(null);
+/** The metal studio with neutral shadows, reflected by rose gold (see MetalStudio). */
+const RoseEnvContext = createContext<THREE.Texture | null>(null);
 
 /**
  * Black-and-white contrast reads as sparkle on a stone set in a ring; a grey
@@ -84,10 +87,13 @@ export function GemEnvironmentProvider({
   variant?: "jewellery" | "loose";
 }) {
   const gemScene = useMemo(() => new THREE.Scene(), []);
+  const roseScene = useMemo(() => new THREE.Scene(), []);
   const [envMap, setEnvMap] = useState<THREE.Texture | null>(null);
+  const [roseEnv, setRoseEnv] = useState<THREE.Texture | null>(null);
 
   useFrame(() => {
     if (gemScene.environment && gemScene.environment !== envMap) setEnvMap(gemScene.environment);
+    if (roseScene.environment && roseScene.environment !== roseEnv) setRoseEnv(roseScene.environment);
   });
 
   return (
@@ -95,14 +101,40 @@ export function GemEnvironmentProvider({
       <Environment scene={gemScene} resolution={512} frames={1}>
         {variant === "loose" ? <LooseStoneStudio /> : <JewelleryStudio />}
       </Environment>
-      <EnvMapContext.Provider value={envMap}>{children}</EnvMapContext.Provider>
+      <Environment scene={roseScene} resolution={512} frames={1}>
+        <MetalStudio neutral />
+      </Environment>
+      <EnvMapContext.Provider value={envMap}>
+        <RoseEnvContext.Provider value={roseEnv}>{children}</RoseEnvContext.Provider>
+      </EnvMapContext.Provider>
     </>
   );
 }
 
 /** Polished precious metal: a fine, slightly soft mirror, as gold looks after hand finishing. */
+/**
+ * Rose gold goes without the glossy top coat: on a warm metal its colourless
+ * reflections turn the highlights grey-pink and the metal looks plated.
+ */
+const UNCOATED = new Set(METAL_OPTIONS.filter((m) => m.id === "rose").map((m) => m.color));
+
+const ROSE_ENV = 1.3;
+
 export function MetalMaterial({ color }: { color: string }) {
-  return <meshPhysicalMaterial color={color} metalness={1} roughness={0.1} envMapIntensity={1.1} clearcoat={0.5} clearcoatRoughness={0.04} />;
+  const rose = UNCOATED.has(color);
+  const roseEnv = useContext(RoseEnvContext);
+  return (
+    <meshPhysicalMaterial
+      // Rose gold reflects the neutral studio once it is ready; the rest use the scene's own.
+      envMap={rose ? roseEnv : null}
+      color={color}
+      metalness={1}
+      roughness={0.1}
+      envMapIntensity={rose ? ROSE_ENV : 1.1}
+      clearcoat={rose ? 0 : 0.5}
+      clearcoatRoughness={0.04}
+    />
+  );
 }
 
 export function GemMaterial({ color, aberration = 0.012 }: { color: string; aberration?: number }) {

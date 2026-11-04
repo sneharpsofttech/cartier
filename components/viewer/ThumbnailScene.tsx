@@ -56,7 +56,11 @@ export default function ThumbnailScene({
       <Canvas
         dpr={2}
         camera={{ position: [...camera.position], fov: 30, near: 0.1, far: 50 }}
-        gl={{ antialias: true, toneMapping: setting ? THREE.NeutralToneMapping : THREE.ACESFilmicToneMapping }}
+        // Rose settings keep the builder's tone mapping: the neutral one pushes rose gold towards coral.
+        gl={{
+          antialias: true,
+          toneMapping: setting && metal !== "rose" ? THREE.NeutralToneMapping : THREE.ACESFilmicToneMapping,
+        }}
         onCreated={({ camera: cam }) => cam.lookAt(...(camera.target as [number, number, number]))}
       >
         <color attach="background" args={[background]} />

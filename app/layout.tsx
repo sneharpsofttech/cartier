@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import PageLoader from "@/components/steps/PageLoader";
+import RouteProgress from "@/components/steps/RouteProgress";
 import "./globals.css";
 
 // Marcellus ships with the app (from @fontsource), so nothing is fetched from
@@ -45,6 +46,7 @@ export default function RootLayout({
       </head>
       <body>
         <PageLoader />
+        <RouteProgress />
         {children}
       </body>
     </html>

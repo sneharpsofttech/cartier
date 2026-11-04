@@ -18,6 +18,9 @@ export default function PieceViewer({ slug }: { slug: string }) {
       dpr={[1, 2]}
       camera={{ position: PIECE_VIEW[product.design.kind], fov: 30, near: 0.05, far: 80 }}
       gl={{ antialias: true, toneMapping: THREE.ACESFilmicToneMapping }}
+      // A text selection elsewhere on the page would otherwise be dragged along when turning the piece.
+      onPointerDownCapture={() => window.getSelection()?.removeAllRanges()}
+      onDragStart={(e) => e.preventDefault()}
     >
       <color attach="background" args={["#f6f0e8"]} />
       <StudioEnvironment />

@@ -82,3 +82,41 @@ export function GradientDome({ top, horizon, bottom }: { top: string; horizon: s
     </mesh>
   );
 }
+
+/**
+ * Studio lighting like a product photographer's: a light-grey sweep plus large
+ * diffused softboxes (overhead, front and both sides) and a couple of small
+ * accents. The soft falloff gives polished metal the smooth highlight-to-shadow
+ * gradients of a real photograph instead of hard-edged bands.
+ *
+ * The shadows are a warm brown, which deepens yellow gold. Rose gold takes the
+ * neutral set instead: brown reflections tint it orange and it reads as copper.
+ */
+const TONES = {
+  warm: { horizon: "#d9d2c6", bottom: "#6f675c", flag: "#3b352e", narrow: "#2e2924", floor: "#4a443c" },
+  neutral: { horizon: "#d8d6d4", bottom: "#6c6a69", flag: "#393737", narrow: "#2d2c2c", floor: "#484646" },
+};
+
+export function MetalStudio({ neutral = false }: { neutral?: boolean }) {
+  const tone = neutral ? TONES.neutral : TONES.warm;
+  return (
+    <>
+      <GradientDome top="#ffffff" horizon={tone.horizon} bottom={tone.bottom} />
+      {/*
+        Dark flags give the metal its depth: deep tones down the sides and under
+        the band, so polished gold shows the light-to-dark sweep of a photograph.
+      */}
+      <SoftBox position={[-6, 0.5, 5]} scale={[4, 13]} color={tone.flag} intensity={0.95} dark />
+      <SoftBox position={[6, 0.5, -5]} scale={[4, 13]} color={tone.flag} intensity={0.95} dark />
+      <SoftBox position={[5, 0, 6]} scale={[2.2, 12]} color={tone.narrow} intensity={0.85} dark />
+      <SoftBox position={[0, -6, -4]} scale={[11, 6]} color={tone.floor} intensity={0.9} dark />
+      <SoftBox position={[0, 8, 0]} scale={[11, 11]} intensity={2.6} color="#fffdf8" />
+      <SoftBox position={[0, 3, 8]} scale={[10, 5]} intensity={2} color="#fffaf0" />
+      <SoftBox position={[-8, 2, 1]} scale={[3.5, 11]} intensity={2.4} />
+      <SoftBox position={[8, 2, -1]} scale={[3.5, 11]} intensity={2.4} />
+      <SoftBox position={[0, -7, 3]} scale={[10, 6]} intensity={1.2} color="#fff6e0" />
+      <SoftBox position={[4, 5, 6]} scale={[2.4, 2.4]} intensity={3.5} />
+      <SoftBox position={[-5, 4, -5]} scale={[2.2, 2.2]} intensity={3} />
+    </>
+  );
+}

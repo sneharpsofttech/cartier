@@ -3,7 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import SiteHeader from "@/components/steps/SiteHeader";
 import SiteFooter from "@/components/steps/SiteFooter";
-import SettingGallery from "@/components/product/SettingGallery";
+import ProductGallery from "@/components/product/ProductGallery";
 import TrustBar from "@/components/steps/TrustBar";
 import { ProductCard } from "@/components/catalog/parts";
 import { METAL_OPTIONS } from "@/components/viewer/ring/config";
@@ -28,10 +28,15 @@ export function generateStaticParams() {
   return SETTINGS.map((s) => ({ slug: s.slug }));
 }
 
-export async function generateMetadata({ params }: Params): Promise<Metadata> {
+/** The metal chosen in the URL (?headMetal=), yellow gold by default. */
+const chosenMetal = (query: URLSearchParams) =>
+  METAL_OPTIONS.some((m) => m.id === query.get("headMetal")) ? query.get("headMetal")! : "yellow";
+
+export async function generateMetadata({ params, searchParams }: Params): Promise<Metadata> {
   const setting = getSetting((await params).slug);
+  const metal = chosenMetal(new URLSearchParams(await searchParams));
   return {
-    title: setting ? `${settingTitle(setting, "yellow")} · DAZORA` : "DAZORA",
+    title: setting ? `${settingTitle(setting, metal)} · DAZORA` : "DAZORA",
     description: setting?.description,
   };
 }
@@ -45,18 +50,18 @@ export default async function SettingDetailPage({ params, searchParams }: Params
   const setting = getSetting((await params).slug);
   if (!setting) notFound();
   const query = new URLSearchParams(await searchParams);
-  const metal = METAL_OPTIONS.some((m) => m.id === query.get("headMetal")) ? query.get("headMetal")! : "yellow";
+  const metal = chosenMetal(query);
   const stone = query.get("stone") ? getStone(query.get("stone")!) : null;
 
   const title = settingTitle(setting, metal);
   const style = SETTING_STYLE_LABELS[setting.style];
   const lifestyle = lifestyleFor("rings", setting.slug);
-  const images = [
+  // The ring in the chosen gold first, then in the others.
+  const photos = [
     { src: settingImage(setting, metal), label: METAL_OPTIONS.find((m) => m.id === metal)!.label },
     ...["yellow", "white", "rose"]
       .filter((m) => m !== metal && !(metal === "platinum" && m === "white"))
       .map((m) => ({ src: settingImage(setting, m), label: METAL_OPTIONS.find((o) => o.id === m)!.label })),
-    ...(lifestyle ? [{ src: lifestyle, label: "Worn" }] : []),
   ];
 
   /** The same page in another metal, keeping everything else. */
@@ -92,8 +97,8 @@ export default async function SettingDetailPage({ params, searchParams }: Params
     <div className={shell.page}>
       <SiteHeader />
       <main className={shell.main}>
-        <div className={styles.layout}>
-          <SettingGallery images={images} title={title} />
+        <div className={`${styles.layout} ${styles.layoutCompact}`}>
+          <ProductGallery slug={setting.slug} setting={{ metal }} photos={photos} title={title} worn={lifestyle} tryOn="hand" />
           <div className={styles.info}>
             <nav className={styles.crumbs} aria-label="Breadcrumb">
               <Link href="/">Home</Link> / <Link href="/settings">Engagement Rings</Link> /

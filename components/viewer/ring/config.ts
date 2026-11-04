@@ -167,8 +167,8 @@ export const METAL_OPTIONS: MetalOption[] = [
   {
     id: "rose",
     label: "Rose Gold",
-    color: "#f0b29a",
-    preview: "radial-gradient(circle at 30% 30%, #ffe6dc, #f4bfa8 55%, #d48d74)",
+    color: "#f3b3a3",
+    preview: "radial-gradient(circle at 30% 30%, #fde6dc, #f0b2a1 55%, #b9786a)",
   },
   {
     id: "platinum",

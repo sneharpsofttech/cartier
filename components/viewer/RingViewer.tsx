@@ -135,7 +135,14 @@ export default function RingViewer({ title: titleProp, modelUrl, product }: Prop
   return (
     <div className={styles.shell}>
       <div className={styles.layout}>
-        <div ref={root} className={styles.viewer} style={{ background }}>
+        <div
+          ref={root}
+          className={styles.viewer}
+          style={{ background }}
+          // A text selection elsewhere on the page would otherwise be dragged along when turning the ring.
+          onPointerDownCapture={() => window.getSelection()?.removeAllRanges()}
+          onDragStart={(e) => e.preventDefault()}
+        >
           {tryOn ? (
             <HandTryOn
               ref={hand}

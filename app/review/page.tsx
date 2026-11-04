@@ -4,6 +4,7 @@ import SiteHeader from "@/components/steps/SiteHeader";
 import SiteFooter from "@/components/steps/SiteFooter";
 import StepBar from "@/components/steps/StepBar";
 import CopyLinkButton from "@/components/steps/CopyLinkButton";
+import AddToBag from "@/components/product/AddToBag";
 import SettingImage from "@/components/settings/SettingImage";
 import { BAND_STYLES, METAL_OPTIONS, describe, fromSearchParams } from "@/components/viewer/ring/config";
 import { SHAPES, shapeById } from "@/components/viewer/ring/shapes";
@@ -166,7 +167,27 @@ export default async function ReviewPage({ searchParams }: { searchParams: Promi
               </div>
             </dl>
             <p className={styles.config}>{describe(config, shapeById(config.shape).label)}</p>
-            <Link href={editSetting} className={styles.primary}>
+            {setting && (
+              <AddToBag
+                className={styles.primary}
+                line={{
+                  id: `ring-${params.toString()}`,
+                  title: `The ${setting.name}${stone ? ` with ${/^[aeiou]/i.test(stoneTitle(stone)) ? "an" : "a"} ${stoneTitle(stone)}` : ""}`,
+                  image: settingImage(setting, config.shankMetal),
+                  href: `/review?${params.toString()}`,
+                  price: total,
+                  detail: [
+                    label(METAL_OPTIONS, config.shankMetal),
+                    `Size ${config.ringSize}`,
+                    stone ? null : "Setting only",
+                    config.band !== "none" ? `with ${label(BAND_STYLES, config.band)}` : null,
+                  ]
+                    .filter(Boolean)
+                    .join(" · "),
+                }}
+              />
+            )}
+            <Link href={editSetting} className={setting ? styles.secondary : styles.primary}>
               View in 3D &amp; try on
             </Link>
             <CopyLinkButton className={styles.secondary} />

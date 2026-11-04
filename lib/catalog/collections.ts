@@ -20,8 +20,13 @@ export type Collection = {
   intro: string;
   /** Photo for the page header; the shop's default when left out. */
   banner?: string;
+  /** Where the jewellery sits in that photo, kept in view when it is cropped (CSS object-position). */
+  bannerFocus?: string;
   includes: (p: Product) => boolean;
 };
+
+/** Men's pieces are named as such ("Men's Flat Edge Wedding Band"). */
+const isMens = (p: Product) => p.name.includes("Men's");
 
 export const COLLECTIONS: Collection[] = [
   {
@@ -42,58 +47,88 @@ export const COLLECTIONS: Collection[] = [
     handle: "necklaces",
     title: "Necklaces & Pendants",
     intro: "Solitaire and halo pendants on fine chains, in every shape and in white, yellow and rose gold.",
-    banner: "/home/model-profile-earrings.webp",
+    banner: "/photos/rose-gold-necklace.webp",
     includes: (p) => p.type === "necklaces",
   },
   {
     handle: "bracelets",
     title: "Bracelets",
     intro: "Tennis bracelets in diamond, sapphire, emerald and ruby, finished with a secure box clasp.",
+    banner: "/photos/model-bracelets.webp",
     includes: (p) => p.type === "bracelets",
   },
   {
     handle: "wedding-bands",
     title: "Wedding Bands",
     intro: "Polished classics and diamond eternity bands, made to sit beautifully beside your engagement ring.",
-    banner: "/home/band-rings.webp",
+    banner: "/photos/couple-bands.webp",
     includes: (p) => p.type === "bands",
+  },
+  {
+    handle: "womens-wedding-bands",
+    title: "Women's Wedding Bands",
+    intro: "Polished classics, pavé and eternity bands, made to sit beautifully beside her engagement ring.",
+    banner: "/photos/chevron-ring-hand.webp",
+    includes: (p) => p.type === "bands" && !isMens(p),
+  },
+  {
+    handle: "mens-wedding-bands",
+    title: "Men's Wedding Bands",
+    intro: "Comfort fit, flat edge and knife edge bands in gold and platinum, plus a channel set diamond band.",
+    banner: "/photos/couple-rings.webp",
+    includes: (p) => p.type === "bands" && isMens(p),
+  },
+  {
+    handle: "eternity-bands",
+    title: "Diamond Eternity Bands",
+    intro: "Diamonds and gemstones set all the way around: pavé, channel, baguette and marquise eternity bands.",
+    banner: "/banners/eternity.webp",
+    includes: (p) => p.design.kind === "band" && p.design.eternity,
   },
   {
     handle: "gemstone-rings",
     title: "Gemstone Rings",
     intro: "Sapphire, emerald, ruby and more, set with diamond halos and pavé bands for a ring with colour.",
-    banner: "/home/band-rings.webp",
+    banner: "/photos/emerald-stack-rings.webp",
+    bannerFocus: "center 72%",
     includes: (p) => p.type === "rings",
   },
   {
     handle: "lab-grown-jewelry",
     title: "Lab Grown Diamond Jewelry",
     intro: "Real diamonds, grown above ground: the same fire and brilliance at a gentler price.",
+    banner: "/home/pendant-set.webp",
     includes: (p) => p.origin === "lab",
   },
   {
     handle: "gemstone-jewelry",
     title: "Gemstone Jewelry",
     intro: "Earrings, pendants, bracelets and rings set with coloured gemstones.",
-    banner: "/home/band-necklace.webp",
+    banner: "/photos/sapphire-necklace-rose.webp",
+    bannerFocus: "center 62%",
     includes: (p) => p.gem !== "diamond",
   },
   {
     handle: "sale",
     title: "Sale",
     intro: "Selected pieces at a special price, while they last.",
+    banner: "/photos/yellow-gold-earrings.webp",
+    bannerFocus: "center 66%",
     includes: (p) => p.compareAt !== undefined,
   },
   {
     handle: "gifts-under-1000",
     title: "Gifts Under $1,000",
     intro: "Thoughtful gifts for birthdays, anniversaries and every celebration in between.",
+    banner: "/photos/diya-rings.webp",
+    bannerFocus: "center 58%",
     includes: (p) => p.price < 1000,
   },
   {
     handle: "gifts-under-2000",
     title: "Gifts Under $2,000",
     intro: "Diamond studs, pendants and bands to mark a moment that matters.",
+    banner: "/home/model-sapphire-set.webp",
     includes: (p) => p.price < 2000,
   },
 ];
@@ -119,11 +154,11 @@ export type GridItem = {
 
 /** Styled photos of each kind of piece being worn, for the cards' hover view. */
 export const LIFESTYLE: Record<string, string[]> = {
-  earrings: ["/home/model-profile-earrings.webp", "/home/band-earrings.webp"],
-  necklaces: ["/home/model-sapphire-set.webp", "/home/emerald-pendant.webp"],
-  bracelets: ["/home/band-bracelet.webp"],
-  bands: ["/home/rings-on-hand.webp", "/home/band-rings.webp"],
-  rings: ["/home/band-rings.webp", "/home/rings-on-hand.webp"],
+  earrings: ["/home/model-profile-earrings.webp", "/home/band-earrings.webp", "/photos/emerald-chandelier-earrings.webp"],
+  necklaces: ["/home/model-sapphire-set.webp", "/photos/rose-gold-necklace.webp", "/photos/silver-necklace-set.webp"],
+  bracelets: ["/photos/spiral-bracelet.webp", "/photos/rose-bracelet-rings.webp", "/photos/cuff-bangles.webp"],
+  bands: ["/photos/couple-rings.webp", "/photos/couple-bands.webp", "/home/band-rings.webp"],
+  rings: ["/home/band-rings.webp", "/home/rings-on-hand.webp", "/photos/chevron-ring-hand.webp"],
 };
 
 /** Pick one of a kind's styled photos, the same one every time for a given piece. */

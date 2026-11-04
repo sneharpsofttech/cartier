@@ -9,20 +9,21 @@ const HERO_BACKDROP = "#120e0b";
  * for scripts/render_thumbnails.py to screenshot. Development only.
  *
  *   ?kind=shank&style=pave   ?kind=band&style=eternity   ?kind=stone&shape=oval&tint=white
- *   ?kind=setting&style=aurora&metal=rose   ?kind=product&style=<product slug>
- *   add &bg=dark for the dark backdrop used by the home page's hero shots
+ *   ?kind=setting&style=aurora&metal=rose   ?kind=product&style=<product slug>&view=1..4
+ *   add &bg=dark for the dark backdrop used by the home page's hero shots, &bg=sand for shop banners
  */
 export default async function ThumbnailPage({
   searchParams,
 }: {
-  searchParams: Promise<{ kind?: string; style?: string; shape?: string; tint?: string; metal?: string; bg?: string }>;
+  searchParams: Promise<{ kind?: string; style?: string; shape?: string; tint?: string; metal?: string; bg?: string; view?: string }>;
 }) {
   if (process.env.NODE_ENV === "production") notFound();
-  const { kind = "shank", style = "solitaire", shape = "round", tint = "white", metal = "yellow", bg } = await searchParams;
-  const background = bg === "dark" ? HERO_BACKDROP : undefined;
+  const { kind = "shank", style = "solitaire", shape = "round", tint = "white", metal = "yellow", bg, view } = await searchParams;
+  // "sand" matches the shop banners' beige panel, so a render can sit beside it.
+  const background = bg === "dark" ? HERO_BACKDROP : bg === "sand" ? "#f5e7d6" : undefined;
   if (kind === "stone") return <ThumbnailStage kind="stone" shape={shape} tint={tint} />;
   // A ring setting product: style is the setting's slug.
-  if (kind === "product") return <ThumbnailStage kind="product" style={style} background={background} />;
+  if (kind === "product") return <ThumbnailStage kind="product" style={style} background={background} view={Number(view) || 1} />;
   if (kind === "setting") return <ThumbnailStage kind="setting" style={style} metal={metal} background={background} />;
   return <ThumbnailStage kind={kind === "band" ? "band" : "shank"} style={style} />;
 }

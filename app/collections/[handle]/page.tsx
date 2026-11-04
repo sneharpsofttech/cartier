@@ -6,6 +6,7 @@ import ProductCollection from "@/components/catalog/ProductCollection";
 import ShopHeader from "@/components/catalog/ShopHeader";
 import { SORTS, type SortId } from "@/lib/catalog/sort";
 import { collectionProducts, getCollection, productFilters, productItem } from "@/lib/catalog/collections";
+import { PRODUCT_TYPE_LABELS, type ProductType } from "@/lib/catalog/products";
 import styles from "../../shell.module.css";
 
 type Params = { params: Promise<{ handle: string }>; searchParams: Promise<Record<string, string | string[]>> };
@@ -38,19 +39,38 @@ export default async function CollectionPage({ params, searchParams }: Params) {
   const hi = Number(one("price_max"));
   const sort = (SORTS.some((s) => s.id === one("sort")) ? one("sort") : "featured") as SortId;
 
+  // A link that opens the collection filtered (?gem=diamond) gets a title that says so:
+  // "Diamond Wedding Bands", "White Gold Fine Jewelry", "Lab Grown Earrings".
+  const only = (id: string) => (selected[id]?.length === 1 ? selected[id][0] : null);
+  const label = (id: string) => filters.find((g) => g.id === id)?.options.find((o) => o.id === only(id))?.label;
+  const prefix = [
+    label("metal"),
+    only("origin") === "lab" ? "Lab Grown" : undefined,
+    only("gem") && only("gem") !== "diamond" ? label("gem") : only("gem") === "diamond" ? "Diamond" : undefined,
+  ].filter(Boolean);
+  const noun = only("type") ? PRODUCT_TYPE_LABELS[only("type") as ProductType] : collection.title;
+  const filtered = prefix.length > 0 || noun !== collection.title;
+  const title = filtered ? [...prefix, noun.replace(/ Collection$/, "")].join(" ") : collection.title;
+
   return (
     <div className={styles.page}>
       <SiteHeader />
       <main>
         <ShopHeader
-          title={collection.title}
-          crumb={{ label: "Shop", href: "/collections/fine-jewelry" }}
+          title={title}
+          crumb={
+            filtered
+              ? { label: collection.title, href: `/collections/${collection.handle}` }
+              : { label: "Shop", href: "/collections/fine-jewelry" }
+          }
           intro={collection.intro}
           image={collection.banner}
-          count={products.length}
+          focus={collection.bannerFocus}
         />
         <div className={`${styles.main} ${styles.shopMain}`}>
+          {/* Keyed on the URL: following another menu link to this collection starts its filters afresh. */}
           <ProductCollection
+            key={JSON.stringify(raw)}
             items={products.map(productItem)}
             filters={filters}
             initial={{ selected, price: lo > 0 && hi > lo ? [lo, hi] : null, sort }}

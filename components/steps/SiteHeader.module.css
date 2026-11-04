@@ -241,6 +241,34 @@
   color: var(--gold-ink);
 }
 
+/* The section you are in: brown, underlined in brown (the line follows the label at any width). */
+.top[data-active="true"] {
+  color: var(--gold-ink);
+  text-decoration: underline;
+  text-decoration-color: var(--brown);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 9px;
+}
+
+.top[data-active="true"] .badge {
+  text-decoration: none;
+}
+
+/* The link you followed, inside its dropdown: brown, with the dash shown. */
+.col a[data-active="true"] {
+  padding-left: 18px;
+  color: var(--gold-ink);
+}
+
+.col a[data-active="true"]::before {
+  width: 12px;
+}
+
+.mobileTop[data-active="true"],
+.mobileSub a[data-active="true"] {
+  color: var(--gold-ink);
+}
+
 .item {
   position: relative;
 }
@@ -367,6 +395,58 @@
   font-size: 20px;
   line-height: 1.2;
   color: var(--ink);
+}
+
+/*
+ * Photo columns: a wide photo above each column, a small spaced capital title
+ * and the links, with no rules between, as in a printed catalogue.
+ */
+.megaInner[data-photos] {
+  grid-template-columns: repeat(4, minmax(0, 300px));
+  gap: 0 26px;
+}
+
+.megaInner[data-photos] .col {
+  padding: 0;
+  border-left: 0;
+}
+
+.col a.colPhoto,
+.col a.colPhoto:hover {
+  padding: 0;
+}
+
+.col a.colPhoto::before {
+  content: none;
+}
+
+.colPhoto {
+  display: block;
+  aspect-ratio: 2.6;
+  margin-bottom: 22px;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.colPhoto img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.6s ease;
+}
+
+.colPhoto:hover img {
+  transform: scale(1.05);
+}
+
+.megaInner[data-photos] .colTitle {
+  margin-bottom: 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.26em;
+  text-transform: uppercase;
 }
 
 /* Photo card: words over a soft dark fade at the bottom, the photo easing in on hover. */

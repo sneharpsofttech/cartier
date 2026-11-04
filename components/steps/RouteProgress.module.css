@@ -1,0 +1,52 @@
+/* A slim brown bar across the very top of the window, above the header. */
+.track {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+  height: 3px;
+  pointer-events: none;
+}
+
+.bar {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 0;
+  background: var(--brown);
+  box-shadow:
+    0 0 10px rgba(172, 128, 93, 0.7),
+    0 0 4px rgba(172, 128, 93, 0.6);
+}
+
+/* Races to a third straight away, then creeps on, never quite arriving until the page does. */
+.track[data-state="loading"] .bar {
+  animation: creep 8s cubic-bezier(0.1, 0.7, 0.2, 1) forwards;
+}
+
+.track[data-state="done"] .bar {
+  width: 100%;
+  opacity: 0;
+  transition:
+    width 0.2s ease,
+    opacity 0.25s ease 0.2s;
+}
+
+@keyframes creep {
+  0% {
+    width: 0;
+  }
+  10% {
+    width: 35%;
+  }
+  100% {
+    width: 90%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track[data-state="loading"] .bar {
+    width: 60%;
+    animation: none;
+  }
+}

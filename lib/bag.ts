@@ -6,7 +6,16 @@
  */
 import { useSyncExternalStore } from "react";
 
-export type BagLine = { id: string; title: string; image: string; href: string; price: number; qty: number };
+export type BagLine = {
+  id: string;
+  title: string;
+  image: string;
+  href: string;
+  price: number;
+  qty: number;
+  /** A short line under the title: metal, size, the ring's make-up. */
+  detail?: string;
+};
 
 const KEY = "bag";
 const EVENT = "bag-change";
@@ -43,10 +52,20 @@ function subscribe(onChange: () => void) {
 
 export const useBag = () => useSyncExternalStore(subscribe, read, () => EMPTY);
 
+const never = () => () => {};
+/** False during the server render and hydration, so pages don't flash "empty" before the bag is read. */
+export const useBagReady = () => useSyncExternalStore(never, () => true, () => false);
+
 export function addToBag(line: Omit<BagLine, "qty">) {
   const lines = read();
   const found = lines.find((l) => l.id === line.id);
   write(found ? lines.map((l) => (l.id === line.id ? { ...l, qty: l.qty + 1 } : l)) : [...lines, { ...line, qty: 1 }]);
+}
+
+/** Sets a line's quantity (1 to 10); the cart page's steppers use this. */
+export function setBagQty(id: string, qty: number) {
+  const n = Math.max(1, Math.min(10, Math.round(qty)));
+  write(read().map((l) => (l.id === id ? { ...l, qty: n } : l)));
 }
 
 export function removeFromBag(id: string) {

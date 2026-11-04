@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { MENU } from "@/lib/catalog/menu";
+import { MENU, menuSection } from "@/lib/catalog/menu";
+import { getProduct } from "@/lib/catalog/products";
 import { removeFromBag, useBag } from "@/lib/bag";
 import { formatPrice } from "@/lib/diamonds/types";
 import styles from "./SiteHeader.module.css";
@@ -44,6 +45,10 @@ export default function HeaderBar() {
   const [closedItem, setClosedItem] = useState<string | null>(null);
   const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
+  // The page's own address (with its ?filters), so the link that leads here can be marked.
+  const [here, setHere] = useState<string | null>(null);
+  useEffect(() => setHere(window.location.pathname + window.location.search), [pathname]);
+  const section = menuSection(pathname, getProduct(pathname.split("/")[2] ?? "")?.type);
 
   useEffect(() => {
     // Tightening the pinned header shortens the page by about 55px, and the browser moves the
@@ -118,7 +123,13 @@ export default function HeaderBar() {
                     setClosedItem(item.label);
                   }}
                 >
-                  <Link href={item.href} className={styles.top}>
+                  <Link
+                    href={item.href}
+                    className={styles.top}
+                    data-active={item.label === section || undefined}
+                    aria-current={item.label === section ? "page" : undefined}
+                    onClick={() => setHere(item.href)}
+                  >
                     {item.label}
                     {item.badge && <span className={styles.badge}>{item.badge}</span>}
                     {item.columns && (
@@ -129,12 +140,27 @@ export default function HeaderBar() {
                   </Link>
                   {item.columns && (
                     <div className={mega ? styles.mega : styles.dropdown}>
-                      <div className={mega ? styles.megaInner : undefined}>
+                      <div
+                        className={mega ? styles.megaInner : undefined}
+                        data-photos={(mega && item.columns.some((c) => c.image)) || undefined}
+                      >
                         {item.columns.map((col) => (
                           <div key={col.title} className={styles.col}>
+                            {mega && col.image && (
+                              <Link href={col.links[0].href} className={styles.colPhoto} tabIndex={-1} aria-hidden="true">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img src={col.image} alt="" loading="lazy" style={col.imageFocus ? { objectPosition: col.imageFocus } : undefined} />
+                              </Link>
+                            )}
                             {mega && <p className={styles.colTitle}>{col.title}</p>}
                             {col.links.map((l) => (
-                              <Link key={l.label} href={l.href}>
+                              <Link
+                                key={l.label}
+                                href={l.href}
+                                data-active={l.href === here || undefined}
+                                aria-current={l.href === here ? "page" : undefined}
+                                onClick={() => setHere(l.href)}
+                              >
                                 {l.label}
                               </Link>
                             ))}
@@ -163,10 +189,11 @@ export default function HeaderBar() {
           <button className={styles.icon} aria-label="Search" onClick={() => toggle("search")}>
             {Icon.search}
           </button>
-          <button className={styles.icon} aria-label={`Bag, ${count} items`} onClick={() => toggle("bag")}>
+          {/* The bag icon opens the cart page; the drawer only slides in after something is added. */}
+          <Link href="/cart" className={styles.icon} aria-label={`Bag, ${count} items`} onClick={() => setPanel("none")}>
             {Icon.bag}
             {count > 0 && <span className={styles.count}>{count}</span>}
-          </button>
+          </Link>
           <Link href="/settings" className={styles.cta}>
             Design Your Ring
           </Link>
@@ -213,6 +240,7 @@ export default function HeaderBar() {
                   <>
                     <button
                       className={styles.mobileTop}
+                      data-active={item.label === section || undefined}
                       aria-expanded={openItem === item.label}
                       onClick={() => setOpenItem((cur) => (cur === item.label ? null : item.label))}
                     >
@@ -225,7 +253,15 @@ export default function HeaderBar() {
                           <div key={col.title}>
                             {item.columns!.length > 1 && <p>{col.title}</p>}
                             {col.links.map((l) => (
-                              <Link key={l.label} href={l.href} onClick={() => setPanel("none")}>
+                              <Link
+                                key={l.label}
+                                href={l.href}
+                                data-active={l.href === here || undefined}
+                                onClick={() => {
+                                  setHere(l.href);
+                                  setPanel("none");
+                                }}
+                              >
                                 {l.label}
                               </Link>
                             ))}
@@ -235,7 +271,12 @@ export default function HeaderBar() {
                     )}
                   </>
                 ) : (
-                  <Link href={item.href} className={styles.mobileTop} onClick={() => setPanel("none")}>
+                  <Link
+                    href={item.href}
+                    className={styles.mobileTop}
+                    data-active={item.label === section || undefined}
+                    onClick={() => setPanel("none")}
+                  >
                     <span>
                       {item.label}
                       {item.badge && <span className={styles.badge}>{item.badge}</span>}
@@ -288,11 +329,10 @@ export default function HeaderBar() {
                   <span>Subtotal</span>
                   <span>{formatPrice(subtotal)}</span>
                 </p>
-                <small>Shipping and taxes calculated at checkout.</small>
-                <button className="btn" disabled title="Checkout is not connected in this demo">
-                  Check Out
-                </button>
-                <small>Checkout is not connected in this demo.</small>
+                <small>Free insured shipping. Taxes calculated at checkout.</small>
+                <Link href="/cart" className="btn" onClick={() => setPanel("none")}>
+                  View Bag &amp; Check Out
+                </Link>
               </div>
             </>
           )}

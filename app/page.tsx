@@ -45,7 +45,7 @@ const SLIDES: Slide[] = [
     href: "/collections/fine-jewelry",
     main: "/home/model-profile-earrings.webp",
     small: photo("14k-yellow-gold-75ctw-double-row-diamond-band"),
-    side: "/home/model-emerald-set.webp",
+    side: "/photos/yellow-gold-earrings.webp",
     alt: "A model wearing drop earrings and a layered gold necklace",
   },
   {
@@ -54,8 +54,8 @@ const SLIDES: Slide[] = [
     text: "Diamond and sapphire pieces that catch the light from every angle, from a first pair of studs to an anniversary statement.",
     href: "/collections/necklaces",
     main: "/home/model-sapphire-set.webp",
-    small: "/home/wedding-bands-pair.webp",
-    side: "/home/bracelet-flowers.webp",
+    small: "/photos/couple-rings.webp",
+    side: "/photos/spiral-bracelet.webp",
     alt: "A model wearing a diamond and sapphire necklace and earrings",
   },
   {
@@ -65,7 +65,7 @@ const SLIDES: Slide[] = [
     href: "/settings",
     main: "/home/rings-on-hand.webp",
     small: photo("14k-white-gold-3-00ctw-diamond-tennis-bracelet"),
-    side: "/home/emerald-pendant.webp",
+    side: "/photos/emerald-stack-rings.webp",
     alt: "Diamond engagement rings worn on a hand",
   },
 ];
@@ -117,7 +117,7 @@ const PANELS: Panel[] = [
   {
     title: "Bracelets",
     href: "/collections/bracelets",
-    image: "/home/band-bracelet.webp",
+    image: "/banners/bracelet.webp",
     position: "center 56%",
     count: count("bracelets"),
     text: "Tennis bracelets in diamond, sapphire, emerald and ruby, with a secure box clasp.",
@@ -146,7 +146,7 @@ const ARRIVALS: GridItem[] = [
 const NECKLACE = pick("14k-yellow-gold-90ctw-oval-halo-diamond-pendant");
 /** Styled photos under the bracelets text, each leading to its collection. */
 const PAIR = [
-  { href: "/collections/necklaces", image: "/home/heart-pendant.webp", title: "Gold Heart Pendant", note: "Necklaces" },
+  { href: "/collections/necklaces", image: "/photos/silver-necklace-set.webp", title: "Diamond Drop Necklace", note: "Necklaces" },
   { href: "/settings", image: "/home/solitaire-ring.webp", title: "Engraved Solitaire Ring", note: "Engagement Rings" },
 ];
 
@@ -223,7 +223,7 @@ export default function Home() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/home/model-emerald-choker.webp" alt="" className={styles.stackMain} loading="lazy" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/home/emerald-pendant.webp" alt="" className={styles.stackSide} loading="lazy" />
+            <img src="/photos/rose-gold-necklace.webp" alt="" className={styles.stackSide} loading="lazy" />
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/home/pendant-set.webp" alt="" className={styles.stackPiece} loading="lazy" />
           </Link>
@@ -245,7 +245,7 @@ export default function Home() {
           <Frond className={styles.leafRight} />
           <Link href="/settings" className={styles.archCard}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/home/ring-on-hand-pink.webp" alt="A pink heart ring worn on a hand" loading="lazy" />
+            <img src="/photos/rose-bracelet-rings.webp" alt="A rose gold diamond bracelet, bangles and rings worn together" loading="lazy" />
             <svg viewBox="0 0 300 160" className={styles.arcText} aria-hidden="true">
               <path id="arc" d="M24 150 A 126 126 0 0 1 276 150" fill="none" />
               <text>

@@ -1,3 +1,5 @@
+import { existsSync } from "node:fs";
+import path from "node:path";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -7,7 +9,7 @@ import ProductGallery from "@/components/product/ProductGallery";
 import AddToBag from "@/components/product/AddToBag";
 import TrustBar from "@/components/steps/TrustBar";
 import { ProductCard } from "@/components/catalog/parts";
-import { productItem } from "@/lib/catalog/collections";
+import { lifestyleFor, productItem } from "@/lib/catalog/collections";
 import {
   DESIGNER_LABELS,
   GEM_LABELS,
@@ -47,6 +49,13 @@ export default async function ProductPage({ params }: Params) {
   const product = getProduct((await params).slug);
   if (!product) notFound();
   const image = productImage(product);
+  // The main photo, then whichever extra angles have been rendered ({slug}-2 to -4).
+  const photos = [
+    image,
+    ...[2, 3, 4]
+      .map((n) => `/jewelry/${product.slug}-${n}.webp`)
+      .filter((src) => existsSync(path.join(process.cwd(), "public", src))),
+  ];
   const saving = product.compareAt ? product.compareAt - product.price : 0;
   const shape = "shape" in product.design ? shapeById(product.design.shape).label : null;
   const related = PRODUCTS.filter((p) => p.type === product.type && p.slug !== product.slug).slice(0, 4);
@@ -66,8 +75,20 @@ export default async function ProductPage({ params }: Params) {
     <div className={shell.page}>
       <SiteHeader />
       <main className={shell.main}>
-        <div className={styles.layout}>
-          <ProductGallery slug={product.slug} image={image} title={product.name} />
+        <div className={`${styles.layout} ${styles.layoutCompact}`}>
+          <ProductGallery
+            slug={product.slug}
+            photos={photos}
+            title={product.name}
+            worn={lifestyleFor(product.type, product.slug)}
+            tryOn={
+              ["ring", "band", "bracelet"].includes(product.design.kind)
+                ? "hand"
+                : product.design.kind === "studs" || product.design.kind === "pendant"
+                  ? "head"
+                  : undefined
+            }
+          />
           <div className={styles.info}>
             <nav className={styles.crumbs} aria-label="Breadcrumb">
               <Link href="/">Home</Link> /{" "}
@@ -91,7 +112,14 @@ export default async function ProductPage({ params }: Params) {
             </p>
             <AddToBag
               className={`btn ${styles.cart}`}
-              line={{ id: product.slug, title: product.name, image, href: `/products/${product.slug}`, price: product.price }}
+              line={{
+                id: product.slug,
+                title: product.name,
+                image,
+                href: `/products/${product.slug}`,
+                price: product.price,
+                detail: [METAL_LABELS[product.metal], product.ctw > 0 && `${product.ctw.toFixed(2)} ctw`].filter(Boolean).join(" · "),
+              }}
             />
             <div className={styles.trust}>
               <TrustBar compact />

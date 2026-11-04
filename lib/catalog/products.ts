@@ -121,6 +121,12 @@ const SEEDS: Seed[] = [
   { title: "Pink Sapphire Pear Ring", type: "rings", metal: "rose", gem: "pink", origin: "natural", ctw: 1.3, price: 1790, note: "A soft pink pear on a twisted band.", design: { kind: "ring", shape: "pear", carat: 1.25, head: "prong", shank: "twist" } },
   { title: "Yellow Sapphire Radiant Ring", type: "rings", metal: "yellow", gem: "yellow", origin: "natural", ctw: 2, price: 1990, note: "A sunny radiant cut sapphire with a hidden halo.", design: { kind: "ring", shape: "radiant", carat: 1.75, head: "hiddenHalo", shank: "doubleRow" } },
   { title: "Marquise Sapphire Vine Ring", type: "rings", metal: "platinum", gem: "sapphire", origin: "natural", ctw: 1.4, price: 2290, note: "A marquise sapphire on a vine of diamonds.", design: { kind: "ring", shape: "marquise", carat: 1.1, head: "prong", shank: "marquiseVine" } },
+
+  // Men's wedding bands (listed last, so the stock numbers above stay the same)
+  { title: "Men's Classic Comfort Fit Band", type: "bands", metal: "yellow", gem: "diamond", origin: "natural", ctw: 0, price: 690, note: "A rounded, comfort fit band with a high polish, for everyday wear.", design: { kind: "band", shank: "solitaire", eternity: false } },
+  { title: "Men's Flat Edge Wedding Band", type: "bands", metal: "white", gem: "diamond", origin: "natural", ctw: 0, price: 780, note: "Crisp flat edges and a smooth top for a clean, modern look.", design: { kind: "band", shank: "traditional12", eternity: false } },
+  { title: "Men's Knife Edge Wedding Band", type: "bands", metal: "platinum", gem: "diamond", origin: "natural", ctw: 0, price: 1190, note: "A fine centre ridge that catches the light, in solid platinum.", design: { kind: "band", shank: "knifeEdge", eternity: false } },
+  { title: "Men's Channel Set Diamond Band", type: "bands", metal: "white", gem: "diamond", origin: "natural", ctw: 0.5, price: 1690, note: "Round diamonds set flush between two polished walls.", design: { kind: "band", shank: "channel", eternity: false } },
 ];
 
 const slugify = (s: string) =>
