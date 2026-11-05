@@ -225,6 +225,8 @@ function productAccent(p: Product): string | null {
     case "studs":
     case "pendant":
       return d.head === "prong" ? null : ACCENT_COLOR.diamond;
+    case "cluster":
+      return null;
     case "ring":
       return d.head === "prong" && PLAIN_SHANKS.has(d.shank) ? null : ACCENT_COLOR.diamond;
     case "bracelet":
@@ -256,6 +258,7 @@ const STYLE_LABELS: Record<string, string> = {
   "double-halo": "Double Halo",
   "hidden-halo": "Hidden Halo",
   tennis: "Tennis",
+  cluster: "Cluster",
   eternity: "Eternity",
   classic: "Classic Band",
   "knife-edge": "Knife Edge",
@@ -277,7 +280,7 @@ const BAND_STYLE: Record<string, string> = { solitaire: "classic", knifeEdge: "k
 function productShape(p: Product): string | null {
   const d = p.design;
   if ("shape" in d) return d.shape;
-  if (d.kind === "bracelet") return "round";
+  if (d.kind === "bracelet" || d.kind === "cluster") return "round";
   if (!d.eternity) return null;
   return d.shank === "baguette" ? "baguette" : d.shank === "marquiseVine" ? "marquise" : "round";
 }
@@ -286,6 +289,7 @@ function productStyle(p: Product): string {
   const d = p.design;
   if ("head" in d) return HEAD_STYLE[d.head];
   if (d.kind === "bracelet") return "tennis";
+  if (d.kind === "cluster") return "cluster";
   return BAND_STYLE[d.shank] ?? "eternity";
 }
 

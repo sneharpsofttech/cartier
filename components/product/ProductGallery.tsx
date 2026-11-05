@@ -5,7 +5,13 @@ import { useState } from "react";
 import SettingImage from "@/components/settings/SettingImage";
 import styles from "./Product.module.css";
 
-const loading = () => <p className={styles.loading3d}>Loading 3D view…</p>;
+// While the viewer's code loads; the viewer then shows the product photo until the model is drawn.
+const loading = () => (
+  <div className={styles.modelLoading} role="status">
+    <span className={styles.modelSpinner} />
+    Loading 3D view…
+  </div>
+);
 const PieceViewer = dynamic(() => import("./PieceViewer"), { ssr: false, loading });
 const SettingViewer = dynamic(() => import("./SettingViewer"), { ssr: false, loading });
 const TryOn = dynamic(() => import("./TryOn"), { ssr: false, loading });
@@ -53,7 +59,12 @@ export default function ProductGallery({
     <div className={styles.showcase}>
       <div className={styles.stage} data-worn={(view.kind === "photo" && view.src === worn) || undefined}>
         {view.kind === "photo" ? (
-          <SettingImage key={view.src} src={view.src} alt={`${title}, ${view.label.toLowerCase()}`} priority={active === 0} />
+          <SettingImage
+            key={view.src}
+            src={view.src}
+            alt={`${title}, ${view.label.toLowerCase()}`}
+            priority={active === 0}
+          />
         ) : (
           <>
             {hand ? (
@@ -63,7 +74,6 @@ export default function ProductGallery({
             ) : (
               <PieceViewer slug={slug} />
             )}
-            {!hand && <p className={styles.hint}>Drag to turn · scroll to zoom</p>}
             {tryOn && (
               <button className={styles.handToggle} onClick={() => setHand((v) => !v)} aria-pressed={hand}>
                 <svg viewBox="0 0 24 24" aria-hidden="true">

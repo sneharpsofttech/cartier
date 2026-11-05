@@ -9,6 +9,7 @@ import { InstancedGems, InstancedMetal, UNIT_SPHERE, BAND_TOP } from "./ring/par
 import { DEFAULT_CONFIG, gemColor, metalColor, type HeadType } from "./ring/config";
 import { areaFactor, createCutGeometry, pavilionDepth, shapeById, type ShapeId } from "./ring/shapes";
 import { MetalMaterial } from "./materials";
+import FlowerStud, { FlowerStuds } from "./FlowerStud";
 import type { Design, Product } from "@/lib/catalog/products";
 
 const ONE_CARAT_RADIUS = 0.37;
@@ -275,6 +276,7 @@ function TennisBracelet({
 /** Which way the camera looks at each kind of piece (it is then moved to fit). */
 export const PIECE_VIEW: Record<Design["kind"], [number, number, number]> = {
   studs: [0, 0.4, 6],
+  cluster: [0, 0.4, 6],
   pendant: [0, 0.3, 6],
   bracelet: [0, 3.2, 5.4],
   band: [2.6, 3.1, 5.6],
@@ -288,6 +290,12 @@ export const PIECE_EXTRA_VIEWS: Record<Design["kind"], [number, number, number][
     [3.6, 1.4, 4.6],
     [-2.8, 2.6, 4.8],
     [0, 5.8, 1.8],
+  ],
+  // Three-quarters, in profile (the stones' height, the baskets and the post), and from behind (the butterflies).
+  cluster: [
+    [3.8, 1.2, 4.4],
+    [6, 0.6, 0.4],
+    [-1.4, 1.2, -5.8],
   ],
   // Turned either way, then in profile to show the bail and the stone's depth.
   pendant: [
@@ -338,6 +346,15 @@ export default function JewelryPiece({ product, part = "all", wrist, ear }: Piec
     ) : null;
   }
   switch (design.kind) {
+    case "cluster":
+      // Worn: the back plate against the skin at the origin.
+      if (ear)
+        return (
+          <group position={[0, 0.03, 0]}>
+            <FlowerStud centreCarat={design.centre} petalCarat={design.petal} metal={metal} gem={gem} worn />
+          </group>
+        );
+      return <FlowerStuds centreCarat={design.centre} petalCarat={design.petal} metal={metal} gem={gem} />;
     case "studs":
       if (ear) return <EarStud shape={design.shape} carat={design.carat} head={design.head} metal={metal} gem={gem} />;
       return <Studs shape={design.shape} carat={design.carat} head={design.head} metal={metal} gem={gem} />;

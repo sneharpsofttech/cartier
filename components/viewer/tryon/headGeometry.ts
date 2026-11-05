@@ -12,7 +12,7 @@ function band(y: number, from: number, p0: number, p1: number, to: number) {
 /** The scan reshaped towards a female figure (see HEAD_MODEL.shape). */
 function feminise(source: THREE.BufferGeometry) {
   const g = source.clone();
-  const { centreX: cx, neck, jaw, chin, shoulders, brow, nose, lips } = HEAD_MODEL.shape;
+  const { centreX: cx, neck, jaw, chin, under, shoulders, brow, nose, lips } = HEAD_MODEL.shape;
   const p = g.getAttribute("position").array as Float32Array;
   for (let o = 0; o < p.length; o += 3) {
     let x = p[o];
@@ -27,6 +27,9 @@ function feminise(source: THREE.BufferGeometry) {
     x = cx + (x - cx) * (1 - j * (1 - jaw.width));
     const c = band(y, chin.from, chin.from + 0.25, chin.to - 0.25, chin.to);
     if (z > chin.start) z = chin.start + (z - chin.start) * (1 - c * (1 - chin.reach));
+    // A clean jawline: the soft fullness under the chin drawn back towards the throat.
+    const u = band(y, under.from, under.plateau[0], under.plateau[1], under.to);
+    if (z > under.start) z = under.start + (z - under.start) * (1 - u * (1 - under.amount));
     // Softer features down the middle of the face.
     const mid = (half: number) => 1 - THREE.MathUtils.smoothstep(Math.abs(x - cx), half * 0.6, half);
     const b = band(y, brow.from, brow.plateau[0], brow.plateau[1], brow.to) * mid(brow.halfWidth);

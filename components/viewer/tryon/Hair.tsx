@@ -3,11 +3,10 @@
 import { useMemo } from "react";
 import * as THREE from "three";
 import { HAIR } from "./heads";
-import { useHeadGeometry } from "./headGeometry";
 import { buildHairStrands, strandMaterial } from "./hairStrands";
 
 /**
- * Sleek hair pulled back into a low bun, so the ears and neck stay clear for
+ * Hair swept back into a twisted high bun, so the ears and neck stay clear for
  * the jewellery. Thousands of fine strands (see hairStrands.ts) run from the
  * scalp back into the bun; under them, a dark layer over the scalp (the head's
  * own surface, lifted off it, from a soft hairline) and the bun's core keep any
@@ -41,6 +40,11 @@ function onEar(x: number, y: number, z: number) {
 }
 
 const POINTS = HAIR.hairline.length;
+/** Turns the bun's core (built round its own Z axis) to stand out of the head along the bun's axis. */
+const BUN_TURN = new THREE.Quaternion().setFromUnitVectors(
+  new THREE.Vector3(0, 0, 1),
+  new THREE.Vector3(...HAIR.bun.axis).normalize(),
+);
 
 const VERTEX_HEAD = /* glsl */ `
 attribute vec2 strand;
@@ -67,6 +71,7 @@ uniform vec3 hairTint;
 uniform vec2 hairline[${POINTS}];
 uniform vec2 hairCentre;
 uniform float feather;
+uniform float capInset;
 uniform vec4 ear;
 uniform float earX;
 varying vec2 vStrand;
@@ -102,7 +107,7 @@ float hairCover() {
   // A slightly ragged edge, as real hairlines are.
   float edge = (noise(vec2(around * 14.0, 0.5)) - 0.5) * feather * 0.9;
   // Starts a little behind the hairline, so the very front is individual strands.
-  float c = smoothstep(-feather, feather, vScalp.y - height + edge - 0.24);
+  float c = smoothstep(-feather, feather * 2.0, vScalp.y - height + edge - capInset);
   if (abs(vScalp.x - hairCentre.x) > earX) {
     float r = length(vec2((vScalp.z - ear.y) / ear.w, (vScalp.y - ear.x) / ear.z));
     c *= smoothstep(0.92, 1.06, r);
@@ -148,6 +153,7 @@ function hairMaterial(cover: boolean) {
     shader.uniforms.hairline = { value: HAIR.hairline.map(([a, h]) => new THREE.Vector2(a, h)) };
     shader.uniforms.hairCentre = { value: new THREE.Vector2(...HAIR.centre) };
     shader.uniforms.feather = { value: HAIR.feather };
+    shader.uniforms.capInset = { value: HAIR.capInset };
     shader.uniforms.ear = { value: new THREE.Vector4(...HAIR.ears.centre, ...HAIR.ears.radii) };
     shader.uniforms.earX = { value: HAIR.ears.x };
     shader.vertexShader = shader.vertexShader
@@ -235,8 +241,8 @@ function bunGeometry() {
   return g;
 }
 
-export default function Hair() {
-  const head = useHeadGeometry();
+/** Hair on a head (its skin, in scene units, with normals). */
+export default function Hair({ head }: { head: THREE.BufferGeometry }) {
   const { cap, bun, capMaterial, bunMaterial, strands, fibre } = useMemo(
     () => ({
       cap: capGeometry(head),
@@ -252,7 +258,14 @@ export default function Hair() {
     <>
       <lineSegments geometry={strands} material={fibre} renderOrder={2} frustumCulled={false} />
       <mesh geometry={cap} material={capMaterial} renderOrder={1} castShadow />
-      <mesh geometry={bun} material={bunMaterial} position={HAIR.bun.centre} renderOrder={1} castShadow />
+      <mesh
+        geometry={bun}
+        material={bunMaterial}
+        position={HAIR.bun.centre}
+        quaternion={BUN_TURN}
+        renderOrder={1}
+        castShadow
+      />
     </>
   );
 }

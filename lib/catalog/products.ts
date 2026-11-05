@@ -25,6 +25,8 @@ export type Origin = "natural" | "lab";
 /** How the piece is drawn: which parts, and how they're arranged. */
 export type Design =
   | { kind: "studs"; shape: ShapeId; carat: number; head: HeadType }
+  /** A flower of round diamonds: a centre stone and six petals (carats of each stone). */
+  | { kind: "cluster"; centre: number; petal: number }
   | { kind: "pendant"; shape: ShapeId; carat: number; head: HeadType }
   | { kind: "bracelet"; stone: number; alternate?: Gem }
   | { kind: "band"; shank: ShankStyle; eternity: boolean }
@@ -127,6 +129,9 @@ const SEEDS: Seed[] = [
   { title: "Men's Flat Edge Wedding Band", type: "bands", metal: "white", gem: "diamond", origin: "natural", ctw: 0, price: 780, note: "Crisp flat edges and a smooth top for a clean, modern look.", design: { kind: "band", shank: "traditional12", eternity: false } },
   { title: "Men's Knife Edge Wedding Band", type: "bands", metal: "platinum", gem: "diamond", origin: "natural", ctw: 0, price: 1190, note: "A fine centre ridge that catches the light, in solid platinum.", design: { kind: "band", shank: "knifeEdge", eternity: false } },
   { title: "Men's Channel Set Diamond Band", type: "bands", metal: "white", gem: "diamond", origin: "natural", ctw: 0.5, price: 1690, note: "Round diamonds set flush between two polished walls.", design: { kind: "band", shank: "channel", eternity: false } },
+  // Flower cluster studs
+  { title: "Diamond Flower Cluster Stud Earrings", type: "earrings", metal: "white", gem: "diamond", origin: "natural", ctw: 3, price: 5450, note: "Seven round brilliant diamonds in a flower, each held by hand-set claws, with butterfly backs.", design: { kind: "cluster", centre: 0.3, petal: 0.2 } },
+  { title: "Lab Grown Diamond Flower Cluster Stud Earrings", type: "earrings", metal: "yellow", gem: "diamond", origin: "lab", ctw: 3, price: 2890, note: "A flower of seven round brilliant lab grown diamonds, claw set, with butterfly backs.", design: { kind: "cluster", centre: 0.3, petal: 0.2 } },
 ];
 
 const slugify = (s: string) =>

@@ -84,7 +84,7 @@ export default async function ProductPage({ params }: Params) {
             tryOn={
               ["ring", "band", "bracelet"].includes(product.design.kind)
                 ? "hand"
-                : product.design.kind === "studs" || product.design.kind === "pendant"
+                : ["studs", "cluster", "pendant"].includes(product.design.kind)
                   ? "head"
                   : undefined
             }
